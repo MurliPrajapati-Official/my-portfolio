@@ -1,30 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", sans-serif;
-  --font-display: "Outfit", sans-serif;
-  --font-mono: "Space Grotesk", monospace;
-  --color-neon-blue: #00f0ff;
-  --color-neon-purple: #b026ff;
-  --color-neon-green: #39ff14;
-  --color-dark-bg: #0B0F19;
+:root {
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-dm-mono: "DM Mono", monospace;
+  --font-instrument: "Instrument Serif", serif;
+  --font-jetbrains: "JetBrains Mono", monospace;
+
+  --color-bg-primary: #0A0A0A;
+  --color-bg-secondary: #111111;
+  --color-surface: #161616;
+  --color-border-dim: #222222;
+  --color-text-primary: #F0F0F0;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #333333;
+  --color-accent: #E8FF47;
+  --color-accent-hover: #D4EB3A;
+  --color-error: #FF4444;
 }
 
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+/* Fallback class to guarantee the green color works */
+.text-accent-fix {
+  color: #E8FF47 !important;
+}
+.bg-accent-fix {
+  background-color: #E8FF47 !important;
 }
 
-.bg-grid-pattern-dark {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+@layer base {
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-family: var(--font-instrument);
+  }
+
+  body::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg-primary);
+  }
 }
 
-.bg-paper-texture {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+.custom-cursor {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease-out;
 }
+
+.custom-cursor-hover {
+  transform: scale(4);
+  mix-blend-mode: difference;
+}
+
