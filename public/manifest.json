@@ -1,0 +1,21 @@
+{
+  "name": "Murli Prajapati | Full Stack Web Developer & AI Engineer",
+  "short_name": "Murli Prajapati",
+  "description": "Founder of Beilco Agency, Full Stack Developer, and AI Automation Engineer building global digital solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#E8FF47",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

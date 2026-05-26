@@ -1,13 +1,405 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MURLI — Portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- ==========================================
+       1. Search Console & Search Engine Verification
+       ========================================== -->
+  <meta name="google-site-verification" content="uDyKwm75Pbitzwolf6dPxYcHEp59W4Szm0zIjSNcPTs" />
+  <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
+  
+  <!-- Canonical link prevents duplicate content issues. -->
+  <link rel="canonical" href="https://murliprajapati.pages.dev/" />
+  
+  <!-- PWA Manifest link -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0A0A0A" />
+  
+  <!-- Crawling Directives -->
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="author" content="Murli Prajapati" />
+  
+  <!-- Mobile Web App Integration -->
+  <meta name="apple-mobile-web-app-title" content="Murli Prajapati" />
+  <meta name="application-name" content="Murli Prajapati" />
+  <meta name="msapplication-TileColor" content="#0A0A0A" />
+
+  <!-- ==========================================
+       2. Primary Meta SEO Tags
+       ========================================== -->
+  <title>Murli Prajapati | Full Stack Web Developer & AI Engineer</title>
+  <meta name="description"
+    content="Official portfolio of Murli Prajapati, a Full Stack Developer, AI Engineer, and Founder of Beilco Agency. Specializing in advanced automation and custom web solutions." />
+  <meta name="keywords"
+    content="Murli Prajapati, Murli Prajapati Portfolio, Beilco, Beilco Agency, Full Stack Developer, AI Engineer, Web Developer, React Developer, AI Automation, Vibe Coding" />
+
+  <!-- ==========================================
+       3. Geographic Targeting (Local SEO)
+       ========================================== -->
+  <meta name="geo.region" content="IN-DL" />
+  <meta name="geo.placename" content="Delhi, India" />
+  <meta name="geo.position" content="28.6139;77.2090" />
+  <meta name="ICBM" content="28.6139, 77.2090" />
+
+  <!-- ==========================================
+       4. Visual Assets (Favicons & Icons)
+       ========================================== -->
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="shortcut icon" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+
+  <!-- ==========================================
+       5. Open Graph / Facebook Metadata
+       ========================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://murliprajapati.pages.dev/">
+  <meta property="og:site_name" content="Murli Prajapati Official Portfolio">
+  <meta property="og:title" content="Murli Prajapati | Full Stack Web Developer & AI Engineer">
+  <meta property="og:description"
+    content="Official portfolio of Murli Prajapati, a Full Stack Developer, AI Engineer, and Founder of Beilco Agency. Specializing in advanced automation and custom web solutions.">
+  <meta property="og:image" content="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Murli Prajapati Portfolio Banner - Full Stack Web Developer & AI Engineer">
+
+  <!-- ==========================================
+       6. Twitter Cards
+       ========================================== -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://murliprajapati.pages.dev/">
+  <meta property="twitter:title" content="Murli Prajapati | Full Stack Web Developer & AI Engineer">
+  <meta property="twitter:description"
+    content="Official portfolio of Murli Prajapati, a Full Stack Developer, AI Engineer, and Founder of Beilco Agency. Specializing in advanced automation and custom web solutions.">
+  <meta property="twitter:image" content="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6">
+
+  <!-- ==========================================
+       7. Structured Data (Schema.org JSON-LD)
+       ========================================== -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://murliprajapati.pages.dev/#person",
+      "name": "Murli Prajapati",
+      "url": "https://murliprajapati.pages.dev/",
+      "image": "https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6",
+      "description": "Founder of Beilco Agency, Full Stack Developer, and AI Automation Engineer building global digital solutions.",
+      "sameAs": [
+        "https://github.com/MurliPrajapati-Official",
+        "https://www.linkedin.com/in/murli-prajapatiofficial/",
+        "https://www.instagram.com/murliprajapati.in/",
+        "https://www.youtube.com/@Dravynz"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Beilco Agency",
+        "url": "https://biel-co.pages.dev"
+      },
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "CM Shri School"
+      },
+      "knowsAbout": [
+        "Full Stack Web Development",
+        "AI Systems",
+        "Automation",
+        "React",
+        "Vite",
+        "Next.js",
+        "SEO",
+        "Google Ads"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://murliprajapati.pages.dev/#organization",
+      "name": "Beilco Agency",
+      "url": "https://biel-co.pages.dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6",
+        "width": "1200",
+        "height": "475"
+      },
+      "sameAs": [
+        "https://github.com/MurliPrajapati-Official",
+        "https://www.linkedin.com/in/murli-prajapatiofficial/",
+        "https://www.instagram.com/murliprajapati.in/"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://murliprajapati.pages.dev/#website",
+      "url": "https://murliprajapati.pages.dev/",
+      "name": "Murli Prajapati Portfolio",
+      "publisher": {
+        "@id": "https://murliprajapati.pages.dev/#person"
+      },
+      "hasPart": [
+        {
+          "@type": "WebPage",
+          "@id": "https://murliprajapati.pages.dev/#about",
+          "url": "https://murliprajapati.pages.dev/about/",
+          "name": "About Murli Prajapati | Education & Robotics Background"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://murliprajapati.pages.dev/#services",
+          "url": "https://murliprajapati.pages.dev/services/",
+          "name": "Full Stack & AI Automation Services"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://murliprajapati.pages.dev/#contact",
+          "url": "https://murliprajapati.pages.dev/contact/",
+          "name": "Contact Murli Prajapati"
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Full Stack Web Development",
+      "provider": {
+        "@id": "https://murliprajapati.pages.dev/#person"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
+      "description": "High-conversion web application engineering, optimized for rapid rendering, search engine visibility, and database security."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "AI Systems & Automations",
+      "provider": {
+        "@id": "https://murliprajapati.pages.dev/#person"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
+      "description": "Custom AI agent orchestration, Vibe Coding pipelines, and enterprise automation using platforms like n8n."
+    }
+  ]
+  </script>
+</head>
+
+<body>
+  <div id="root">
+    <!-- ==========================================
+         8. Inline CSS Performance Loader
+         ========================================== -->
+    <style>
+      body {
+        margin: 0;
+        background-color: #0A0A0A;
+        font-family: "Instrument Serif", Georgia, serif;
+        color: #F0F0F0;
+        overflow-x: hidden;
+      }
+
+      .skeleton-loader {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 24px;
+        box-sizing: border-box;
+        animation: sk-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes sk-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .6; }
+      }
+
+      .sk-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 80px;
+        max-width: 1700px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 16px 8px;
+      }
+
+      .sk-logo {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: 36px;
+        color: #E8FF47;
+        text-decoration: none;
+        letter-spacing: 4px;
+        font-weight: bold;
+      }
+
+      .sk-links {
+        display: flex;
+        gap: 32px;
+      }
+
+      .sk-link {
+        font-family: "DM Mono", monospace;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: #666666;
+        text-decoration: none;
+        display: none;
+      }
+
+      @media(min-width: 768px) {
+        .sk-link { display: block; }
+      }
+
+      .sk-hero {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        flex: 1;
+        max-width: 1700px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 8px;
+      }
+
+      .sk-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        color: #E8FF47;
+        margin-bottom: 24px;
+      }
+
+      .sk-title {
+        font-family: "Bebas Neue", Impact, sans-serif;
+        font-size: clamp(2.5rem, 12vw, 10rem);
+        line-height: 0.9;
+        margin: 0 0 32px 0;
+        color: #F0F0F0;
+        letter-spacing: -2px;
+      }
+
+      .sk-title .accent-text {
+        color: #E8FF47;
+      }
+
+      .sk-desc {
+        font-family: "Instrument Serif", serif;
+        font-style: italic;
+        font-size: clamp(1.5rem, 4vw, 3.5rem);
+        line-height: 1.2;
+        color: #666666;
+        margin: 0 0 48px 0;
+        max-width: 800px;
+      }
+
+      .sk-btn {
+        font-family: "DM Mono", monospace;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #E8FF47;
+        border: 2px solid #E8FF47;
+        padding: 16px 32px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+
+    <!-- Visual skeleton shell -->
+    <div class="skeleton-loader">
+      <header class="sk-nav">
+        <a href="/" class="sk-logo">M</a>
+        <nav class="sk-links">
+          <a href="/about" class="sk-link">Work</a>
+          <a href="/services" class="sk-link">Skills</a>
+          <a href="/contact" class="sk-link">Experience</a>
+        </nav>
+      </header>
+      <main class="sk-hero">
+        <span class="sk-tag">Established 2026</span>
+        <h1 class="sk-title">MURLI <span class="accent-text">PRAJAPATI</span>.</h1>
+        <p class="sk-desc">Founder of Beilco · Full Stack Developer & AI Engineer</p>
+        <a href="/contact" class="sk-btn">View Projects</a>
+
+        <!-- ==========================================
+             9. Crawl Optimization Block (Crucial for JS SPAs)
+             ========================================== -->
+        <div class="sr-only">
+          <h2>Semantic Overview of Murli Prajapati & Beilco Agency</h2>
+          <p>
+            Welcome to the official portfolio of Murli Prajapati, a Full Stack Web Developer, AI Systems Engineer, 
+            and the founder of Beilco Agency. Specializing in translating complex technical business problems 
+            into global digital solutions, Murli builds production-ready web apps with deep optimization, 
+            implements hardened database structures, and automates scaling operations.
+          </p>
+
+          <h2>Core Services and Technical Expertise</h2>
+          <p>
+            Murli Prajapati offers state-of-the-art engineering solutions including:
+            Full Stack Web Development utilizing React, Vite, Next.js, and serverless architectures (Cloudflare Pages, Render);
+            Enterprise Automation designing smart workflows with n8n and orchestrating autonomous AI agent systems;
+            Creative Motion Design producing high-conversion video assets and marketing collateral using After Effects;
+            and Product UI creation aimed at turning small local businesses into global brands.
+          </p>
+          
+          <h2>Academic & Engineering Background</h2>
+          <p>
+            Currently pursuing business and technical projects from Delhi, India. In his academic journey 
+            at CM Shri School, Murli won a top 100 rank and state scholarship in the MVPP examination. 
+            He has also earned the first position in school robotics competitions for engineering a model 
+            automatic braking system on vehicles.
+          </p>
+
+          <h2>Featured Projects & Platforms</h2>
+          <ul>
+            <li>Tempio: A robust database integration and full-stack system deployed on Render.</li>
+            <li>Uniform Trends: A serverless store for modern uniforms built on React and Cloudflare Pages.</li>
+            <li>Beilco Agency Website: A high-performance corporate portal built using Next.js and Motion libraries.</li>
+          </ul>
+
+          <h2>Quick Navigation Links (Sitemap Index Helper)</h2>
+          <ul>
+            <li><a href="/">Home - Official Portfolio Page</a></li>
+            <li><a href="/about">About Us - Academic and Robotics History</a></li>
+            <li><a href="/services">Services - Custom Development & AI Workflows</a></li>
+            <li><a href="/contact">Contact - Book a Project Consultation</a></li>
+            <li><a href="/privacy-policy">Privacy Policy - Personal Data Terms</a></li>
+            <li><a href="/terms">Terms of Service - General User Guidelines</a></li>
+            <li><a href="/cookie-policy">Cookie Policy - Cookies and Tracking Usage</a></li>
+          </ul>
+        </div>
+      </main>
+    </div>
+  </div>
+  
+  <!-- Main entry bundle for Vite -->
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+# ==========================================
+# Robots.txt for Murli Prajapati Portfolio
+# Allows crawlers to access all pages and index them.
+# ==========================================
+
+# Apply rules to all search engine bots (Google, Bing, Yahoo, DuckDuckGo, etc.)
+User-agent: *
+Allow: /
+
+# Reference to the XML sitemap location to accelerate search indexing.
+Sitemap: https://murliprajapati.pages.dev/sitemap.xml

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
-import { Github, Linkedin, Youtube, ArrowUpRight, Mail, Download, Sparkles, Layout, Server, Bot, Video, Lightbulb, Zap, Globe, Shield } from 'lucide-react';
+import { Github, Linkedin, Youtube, Instagram, ArrowUpRight, Mail, Download, Sparkles, Layout, Server, Bot, Video, Lightbulb, Zap, Globe, Shield } from 'lucide-react';
 
 // --- Types ---
 interface Project {
@@ -58,7 +58,7 @@ const CustomCursor = () => {
 };
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <motion.div 
+  <motion.h2 
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -66,7 +66,7 @@ const SectionLabel = ({ children }: { children: React.ReactNode }) => (
   >
     <span className="w-10 md:w-16 h-px bg-accent-fix"></span>
     {children}
-  </motion.div>
+  </motion.h2>
 );
 
 const ProjectRow = ({ project }: { project: Project }) => {
@@ -347,7 +347,7 @@ export default function App() {
 
       <nav className={`fixed top-0 left-0 right-0 h-20 md:h-24 z-50 transition-all duration-500 border-b ${isNavScrolled ? 'bg-bg-primary/95 backdrop-blur-xl border-border-dim py-0' : 'bg-transparent border-transparent py-4 md:py-6'}`}>
         <div className="max-w-[1700px] mx-auto px-6 md:px-8 h-full flex items-center justify-between">
-          <a href="#" className="font-bebas text-3xl md:text-5xl text-accent-fix tracking-[4px] md:tracking-[6px] hover:text-accent-hover hover:scale-110 transition-all interactive">MP</a>
+          <a href="#" className="font-bebas text-3xl md:text-5xl text-accent-fix tracking-[4px] md:tracking-[6px] hover:text-accent-hover hover:scale-110 transition-all interactive">M</a>
           
           <div className="hidden md:flex items-center gap-12 md:gap-20">
             {['Work', 'Skills', 'Experience', 'Contact'].map((item) => (
@@ -366,7 +366,8 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      <main>
+        {/* Hero Section */}
       <section className="min-h-[90vh] md:min-h-screen flex flex-col justify-center max-w-[1700px] mx-auto px-6 md:px-8 pt-20 md:pt-24 relative z-10">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -481,6 +482,9 @@ export default function App() {
           <a href="https://www.linkedin.com/in/murli-prajapatiofficial/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
             <Linkedin size={32} className="md:w-12 md:h-12" />
           </a>
+          <a href="https://www.instagram.com/murliprajapati.in/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
+            <Instagram size={32} className="md:w-12 md:h-12" />
+          </a>
           <a href="https://www.youtube.com/@Dravynz" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
             <Youtube size={32} className="md:w-12 md:h-12" />
           </a>
@@ -496,6 +500,7 @@ export default function App() {
           </button>
         </footer>
       </section>
+      </main>
     </div>
   );
 }
