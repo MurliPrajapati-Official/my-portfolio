@@ -506,8 +506,8 @@ export default function App() {
               <div className="w-24 h-24 rounded-full bg-accent/10 flex items-center justify-center text-accent-fix mb-8 group-hover:scale-110 transition-transform duration-500">
                 <Bot size={48} />
               </div>
-              <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-text-primary mb-4 text-center">Tech Enthusiast</h4>
-              <p className="text-text-secondary text-center text-lg font-instrument">
+              <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-black mb-4 text-center">Tech Enthusiast</h4>
+              <p className="text-black text-center text-lg font-instrument">
                 Whether it's training AI models, building complex React applications, or optimizing cloud infrastructure, I thrive on pushing the boundaries of what's possible on the web.
               </p>
             </div>
