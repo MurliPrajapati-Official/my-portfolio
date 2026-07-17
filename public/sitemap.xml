@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ==========================================
-     Sitemap for Murli Prajapati Portfolio
-     Defines the relationship of pages and canonical routes.
-     ========================================== -->
+<!-- Sitemap for Murli Prajapati Portfolio -->
 <urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -25,9 +22,17 @@
     <priority>0.80</priority>
   </url>
 
-  <!-- Core Page: Services (Priority 0.8) -->
+  <!-- Core Page: Projects (Priority 0.8) -->
   <url>
-    <loc>https://murliprajapati.pages.dev/services/</loc>
+    <loc>https://murliprajapati.pages.dev/projects/</loc>
+    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Core Page: Skills (Priority 0.8) -->
+  <url>
+    <loc>https://murliprajapati.pages.dev/skills/</loc>
     <lastmod>2026-05-26T12:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>

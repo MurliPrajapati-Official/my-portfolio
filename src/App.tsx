@@ -13,6 +13,13 @@ interface Project {
   link: string;
 }
 
+interface PrototypeProject {
+  title: string;
+  link: string;
+  description: string;
+  tags: string[];
+}
+
 interface Experience {
   company: string;
   role: string;
@@ -249,7 +256,7 @@ const CertBadge = ({ title, issuer, link, onClick }: { title: string, issuer: st
     return (
       <button
         onClick={onClick}
-        className="flex items-center gap-6 md:gap-8 bg-surface/50 p-6 md:p-8 border border-border-dim hover:border-accent-fix transition-all group interactive text-left w-full"
+        className="flex items-center gap-6 md:gap-8 bg-surface/50 p-6 md:p-8 border border-border-dim hover:border-accent-fix transition-all group interactive text-left w-full cursor-pointer"
       >
         {content}
       </button>
@@ -272,7 +279,13 @@ const CertBadge = ({ title, issuer, link, onClick }: { title: string, issuer: st
 
 export default function App() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const roles = ["Full Stack Web Developer", "AI Engineer", "Agency Founder (Bielco)"];
+  const roles = [
+    "Web Developer",
+    "UI/UX Designer",
+    "Video Editor",
+    "AI Agent & Bot Creator",
+    "Custom Systems Builder"
+  ];
   const [isNavScrolled, setIsNavScrolled] = useState(false);
   const [showCert, setShowCert] = useState(false);
 
@@ -299,23 +312,11 @@ export default function App() {
     };
   }, []);
 
+  // --- Production Projects ---
   const projects: Project[] = [
     {
       id: "1",
       number: "01",
-      title: "Tempio",
-      tags: ["Full Stack", "Render", "Database"],
-      description: "A comprehensive platform deployed on Render featuring robust full-stack integrations. Architected for scalability and real-time data handling.",
-      details: [
-        "Built a robust PostgreSQL database architecture to handle high-concurrency workloads securely.",
-        "Engineered a custom authentication flow with role-based access controls.",
-        "Integrated real-time websocket connections for instant data synchronization across clients."
-      ],
-      link: "https://tempio.onrender.com"
-    },
-    {
-      id: "2",
-      number: "02",
       title: "Uniform Trends",
       tags: ["E-commerce", "Cloudflare", "React"],
       description: "A modern digital storefront optimized for rapid delivery and performance. Features a seamless shopping experience with serverless backend logic.",
@@ -324,14 +325,14 @@ export default function App() {
         "Implemented complex e-commerce logic including cart state management and secure checkout.",
         "Deployed on Cloudflare Workers for ultra-low latency edge computing."
       ],
-      link: "https://uniformtrends.in"
+      link: "http://uniformtrends.pages.dev/"
     },
     {
-      id: "3",
-      number: "03",
+      id: "2",
+      number: "02",
       title: "Bielco Agency",
       tags: ["Next.js", "Motion", "Business"],
-      description: "The digital heartbeat of Bielco agency. Designed to convert small business challenges into global growth opportunities through high-end engineering.",
+      description: "The digital heartbeat of Bielco. Designed to convert small business challenges into global growth opportunities through high-end engineering.",
       details: [
         "Designed a high-end, motion-rich user interface using Framer Motion and Next.js.",
         "Architected a scalable content management system allowing the team to easily update case studies.",
@@ -340,8 +341,8 @@ export default function App() {
       link: "https://www.bielco.in"
     },
     {
-      id: "4",
-      number: "04",
+      id: "3",
+      number: "03",
       title: "Ominiflow",
       tags: ["B2B SaaS", "Product", "Web"],
       description: "A comprehensive B2B SaaS product designed to streamline workflows and optimize business operations.",
@@ -354,10 +355,62 @@ export default function App() {
     }
   ];
 
+  // --- Factual Prototype Websites ---
+  const prototypes: PrototypeProject[] = [
+    {
+      title: "Bielco Prototype Website 1",
+      link: "https://proto1-bielco.edgeone.dev/",
+      description: "Custom interactive web layout and responsive component prototype built for client showcase.",
+      tags: ["Prototype", "Layout", "Vite"]
+    },
+    {
+      title: "Bielco Prototype Website 2",
+      link: "https://proto2-bielco.edgeone.dev/",
+      description: "Responsive interface design template outlining digital agency core services.",
+      tags: ["Prototype", "CSS", "Vite"]
+    },
+    {
+      title: "Bielco Prototype Website 3",
+      link: "https://proto3-bielco.edgeone.dev/",
+      description: "Polished landing layout presenting animated UI interaction patterns.",
+      tags: ["Prototype", "Motion", "React"]
+    },
+    {
+      title: "Bielco Prototype Website 4",
+      link: "https://proto4-bielco.edgeone.dev/",
+      description: "Clean business showcase prototype with high-end typography and interactive cards.",
+      tags: ["Prototype", "Design System"]
+    },
+    {
+      title: "Bielco Prototype Website 5",
+      link: "https://proto5-bielco.edgeone.dev/",
+      description: "Vibrant dark-mode layout exploration built to demonstrate modern visual frameworks.",
+      tags: ["Prototype", "Dark Mode"]
+    },
+    {
+      title: "Bielco Prototype Website 6",
+      link: "https://proto6-bielco.edgeone.dev/",
+      description: "Component structure prototype focusing on fluid grid layouts and responsive menus.",
+      tags: ["Prototype", "Responsive", "React"]
+    },
+    {
+      title: "Basho Prototype",
+      link: "https://basho.pages.dev/",
+      description: "Modern landing prototype implementing smooth page-level transition animations.",
+      tags: ["Prototype", "Transitions", "React"]
+    },
+    {
+      title: "Metro Grill Restobar Rohini",
+      link: "https://metro-grill-restobar-rohini.pages.dev/",
+      description: "A complete restaurant landing prototype showcasing menus, timings, and custom food display sections.",
+      tags: ["Prototype", "Restobar", "Vite"]
+    }
+  ];
+
   const experience: Experience[] = [
     {
-      company: "Bielco Agency",
-      role: "Co-Founder & Full Stack Developer",
+      company: "Bielco",
+      role: "Co-Founder & Part of Founding Team",
       dates: "2026 — PRESENT",
       bullets: [
         "Solving complex digital presence challenges for small businesses by creating high-impact, custom software solutions.",
@@ -369,30 +422,30 @@ export default function App() {
 
   const skillCategories = [
     {
-      title: "Engineering",
+      title: "Engineering & Development",
       skills: [
-        { title: "Full Stack", icon: <Layout size={24} />, details: "Expert in end-to-end deployment, building full-scale websites using React, TypeScript, HTML, CSS, JavaScript, and Python." },
-        { title: "Google Ads & SEO", icon: <Globe size={24} />, details: "Crafting data-driven targeted ad campaigns, deep search optimization, and conversion funnels to help enterprise clients scale." }
+        { title: "Web Developer", icon: <Layout size={24} />, details: "Building full-scale websites using React, Next.js, HTML, CSS, JavaScript, TypeScript, and Python." },
+        { title: "Google Ads & SEO", icon: <Globe size={24} />, details: "Deep search engine optimization (SEO) and AI engine optimization (AEO) alongside targeted campaign setups to drive top positioning." }
       ]
     },
     {
-      title: "Intelligence & Architecture",
+      title: "Bot Systems & Intelligence",
       skills: [
-        { title: "AI Systems", icon: <Bot size={24} />, details: "Mastery in Vibe Coding and AI Agent architectures. Deep integration with n8n for enterprise-wide automation." },
-        { title: "Security & Database", icon: <Shield size={24} />, details: "Implementing hardened backend infrastructures, secure database architectures, and robust encryption standards." }
+        { title: "AI Agent & Bot Creator", icon: <Bot size={24} />, details: "Creating custom automation bots including Telegram bots, WhatsApp bots, and Discord bots to simplify interactions and manage messaging pipelines." },
+        { title: "Custom Business Systems", icon: <Server size={24} />, details: "Creating systems for business solutions, like bot agents that simplify the weekly reports of businesses, tracking employee status, inventory, products, and system health." }
       ]
     },
     {
-      title: "Creative",
+      title: "Creative & UI/UX",
       skills: [
-        { title: "Motion Design", icon: <Video size={24} />, details: "Professional-grade CapCut and After Effects production for motion graphics, high-conversion brand assets, and marketing content." },
-        { title: "Product UI / UX", icon: <Sparkles size={24} />, details: "Designing premium, conversion-focused user interfaces using Figma and Canva that turn local businesses into worldwide brands." }
+        { title: "UI/UX Designer", icon: <Sparkles size={24} />, details: "Designing premium, conversion-focused user interfaces with high aesthetics using Figma and Canva." },
+        { title: "Video Editor", icon: <Video size={24} />, details: "Professional-grade editing using After Effects and CapCut to output brand video assets and marketing graphics." }
       ]
     }
   ];
 
   return (
-    <div className="relative min-h-screen selection:bg-accent-fix selection:text-bg-primary overflow-x-hidden">
+    <div className="relative min-h-screen selection:bg-accent-fix selection:text-bg-primary overflow-x-hidden bg-bg-primary text-text-primary font-instrument">
       <CustomCursor />
 
       {/* Ambient Green Glows */}
@@ -404,12 +457,20 @@ export default function App() {
         style={{ scaleX }}
       />
 
-      <nav className={`fixed top-0 left-0 right-0 h-20 md:h-24 z-50 transition-all duration-500 border-b ${isNavScrolled ? 'bg-bg-primary/95 backdrop-blur-xl border-border-dim py-0' : 'bg-transparent border-transparent py-4 md:py-6'}`}>
+      {/* Globally Fixed Navigation Bar */}
+      <nav className="fixed top-0 left-0 right-0 h-20 md:h-24 z-50 transition-all duration-500 border-b bg-bg-primary/95 backdrop-blur-xl border-border-dim py-0">
         <div className="max-w-[1700px] mx-auto px-6 md:px-8 h-full flex items-center justify-between">
-          <a href="#" className="font-bebas text-3xl md:text-5xl text-accent-fix tracking-[4px] md:tracking-[6px] hover:text-accent-hover hover:scale-110 transition-all interactive">MP</a>
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="font-bebas text-3xl md:text-5xl text-accent-fix tracking-[4px] md:tracking-[6px] hover:text-accent-hover hover:scale-110 transition-all interactive"
+          >
+            MP
+          </a>
 
+          {/* Desktop Links (Hash Anchors) */}
           <div className="hidden md:flex items-center gap-12 md:gap-20">
-            {['About', 'Work', 'Skills', 'Experience', 'Contact'].map((item) => (
+            {['About', 'Projects', 'Skills', 'Experience', 'Contact'].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -421,13 +482,20 @@ export default function App() {
             ))}
           </div>
 
-          <a href="#contact" className="md:hidden font-dm-mono text-[11px] uppercase tracking-[2px] text-accent-fix border border-accent-fix/30 px-4 py-2 rounded-full interactive">Contact</a>
+          <a
+            href="#contact"
+            className="md:hidden font-dm-mono text-[11px] uppercase tracking-[2px] text-accent-fix border border-accent-fix/30 px-4 py-2 rounded-full interactive"
+          >
+            Contact
+          </a>
         </div>
       </nav>
 
-      <main>
-        {/* Hero Section */}
-        <section className="min-h-[90vh] md:min-h-screen flex flex-col justify-center max-w-[1700px] mx-auto px-6 md:px-8 pt-20 md:pt-24 relative z-10">
+      {/* Sequential Single-Page Content Area */}
+      <main className="relative z-10 pt-20">
+        
+        {/* HERO SECTION */}
+        <section className="min-h-[90vh] md:min-h-screen flex flex-col justify-center max-w-[1700px] mx-auto px-6 md:px-8 pt-20 md:pt-24 relative">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -457,35 +525,58 @@ export default function App() {
               </AnimatePresence>
             </div>
 
-            <p className="font-instrument italic text-3xl md:text-7xl text-text-secondary max-w-6xl leading-[1.2] md:leading-[1.1] mb-12 md:20">
-              Co-Founder of <span className="text-text-primary border-b-2 md:border-b-4 border-accent-fix">Bielco</span>. Translating complex business challenges into <span className="text-accent-fix">worldwide</span> digital solutions.
+            <p className="font-instrument italic text-3xl md:text-7xl text-text-secondary max-w-6xl leading-[1.2] md:leading-[1.1] mb-12 md:mb-20">
+              Co-Founder of <span className="text-text-primary border-b-2 md:border-b-4 border-accent-fix">Bielco</span>. Translating complex business challenges into <span className="text-accent-fix font-normal">worldwide</span> digital solutions.
             </p>
 
-            <div className="flex flex-wrap items-center gap-8 md:gap-20">
+            <div className="flex flex-wrap items-center gap-8 md:gap-12 mb-16 md:mb-24">
               <a
-                href="#work"
+                href="#projects"
                 className="group relative inline-flex items-center px-8 py-4 md:px-16 md:py-7 border-2 border-accent-fix text-accent-fix font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[2px] md:tracking-[4px] font-bold overflow-hidden transition-all hover:bg-accent-fix hover:text-bg-primary hover:pr-12 md:hover:pr-20 interactive"
               >
-                <span className="relative z-10">View Projects</span>
+                <span className="relative z-10">Explore Work</span>
                 <ArrowUpRight size={18} className="absolute right-4 md:right-8 opacity-0 group-hover:opacity-100 transition-all z-10 md:w-6 md:h-6" />
               </a>
+            </div>
+
+            {/* AEO Search Summary Card */}
+            <div className="bg-surface/30 border border-border-dim rounded-lg p-6 md:p-10 max-w-4xl hover:border-accent-fix/30 transition-colors">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-2.5 h-2.5 rounded-full bg-accent-fix animate-pulse"></div>
+                <span className="font-dm-mono text-[11px] uppercase tracking-[3px] text-accent-fix">AEO Summary / Quick Profile Index</span>
+              </div>
+              <h3 className="text-2xl md:text-3xl text-text-primary font-medium mb-4 font-instrument">Murli Prajapati Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-secondary font-instrument text-base md:text-lg">
+                <div>
+                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Roles</strong>
+                  Web Developer, UI/UX Designer, Video Editor, Bot Systems Creator.
+                </div>
+                <div>
+                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Founding Member</strong>
+                  Co-Founder at Bielco (<a href="https://www.bielco.in" target="_blank" rel="noopener noreferrer" className="text-accent-fix underline">www.bielco.in</a>).
+                </div>
+                <div className="md:col-span-2">
+                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Systems Solutions</strong>
+                  Creates custom automation bot agents (Telegram, WhatsApp, Discord) that simplify weekly business reports (mapping inventory, products, employee status, and system health).
+                </div>
+              </div>
             </div>
           </motion.div>
         </section>
 
-        {/* About Section */}
-        <section id="about" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative z-10">
+        {/* ABOUT ME SECTION */}
+        <section id="about" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
           <SectionLabel>About Me</SectionLabel>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-start">
             <div>
               <h3 className="font-instrument text-4xl md:text-6xl text-text-primary mb-8 leading-tight">
-                Bridging the gap between <span className="text-accent-fix italic">business logic</span> and <span className="text-accent-fix italic">technical execution</span>.
+                Bridging the gap between <span className="text-accent-fix italic font-normal">business logic</span> and <span className="text-accent-fix italic font-normal">technical execution</span>.
               </h3>
               <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-6">
-                I am an 11th-grade commerce student with a deep passion for technology. Unlike traditional paths, I combine my understanding of business fundamentals with high-level software engineering to build products that actually solve real-world problems.
+                I am Murli Prajapati, an 11th-grade commerce student from Delhi, India with a deep passion for technology. Unlike traditional paths, I combine my understanding of business fundamentals with high-level software engineering to build products that solve real-world problems.
               </p>
               <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-12">
-                As the Co-Founder of Bielco Agency, I don't just write code; I architect solutions. From winning robotics competitions to developing full-stack SaaS platforms like Ominiflow, my goal is always to deliver scalable, high-performance, and visually stunning digital experiences.
+                As the Co-Founder and part of the founding team of Bielco, I don't just write code; I architect systems. From winning robotics competitions to developing full-stack SaaS platforms, my goal is always to deliver scalable, high-performance, and visually stunning digital experiences.
               </p>
 
               <div className="grid grid-cols-2 gap-8 border-t border-border-dim pt-12">
@@ -508,38 +599,135 @@ export default function App() {
                 </div>
                 <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-black mb-4 text-center">Tech Enthusiast</h4>
                 <p className="text-black text-center text-lg font-instrument">
-                  Whether it's training AI models, building complex React applications, or optimizing cloud infrastructure, I thrive on pushing the boundaries of what's possible on the web.
+                  Whether it's building complex React applications, setting up bot systems, or designing conversion-oriented user flows, I thrive on building tools that simplify operations.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Work Section */}
-        <section id="work" className="py-24 md:py-64 max-w-[1700px] mx-auto px-6 md:px-8 relative z-10">
-          <SectionLabel>My Projects</SectionLabel>
-          <div className="flex flex-col border-t border-border-dim">
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
+          <SectionLabel>Production Platforms</SectionLabel>
+          <div className="flex flex-col border-t border-border-dim mb-24 md:mb-40">
             {projects.map((project) => (
               <ProjectRow key={project.id} project={project} />
             ))}
           </div>
-        </section>
 
-        {/* Capabilities Section */}
-        <section id="skills" className="py-24 md:py-64 max-w-[1700px] mx-auto px-6 md:px-8 relative z-10">
-          <SectionLabel>Core Expertise</SectionLabel>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-40">
-            {skillCategories.map((cat, i) => (
-              <SkillCategory key={i} title={cat.title} skills={cat.skills} />
+          <SectionLabel>Interactive Prototypes</SectionLabel>
+          <p className="text-text-secondary text-lg md:text-2xl font-instrument mb-12 max-w-3xl leading-relaxed">
+            A selection of experimental systems, restaurant portals, and web interface prototypes built using responsive frameworks.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {prototypes.map((proto, idx) => (
+              <div
+                key={idx}
+                className="bg-surface/30 border border-border-dim hover:border-accent-fix/40 p-6 md:p-8 rounded-sm transition-all duration-300 group flex flex-col justify-between min-h-[220px]"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <span className="font-dm-mono text-[11px] text-accent-fix font-bold uppercase tracking-[2px]">0{idx + 1}</span>
+                    <div className="flex flex-wrap gap-1.5 justify-end">
+                      {proto.tags.map(t => (
+                        <span key={t} className="font-jetbrains text-[9px] uppercase tracking-[1px] px-2 py-0.5 bg-accent/5 border border-accent/15 text-accent/70">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <h4 className="text-2xl text-text-primary font-instrument font-medium mb-3 group-hover:text-accent-fix transition-colors duration-300">{proto.title}</h4>
+                  <p className="text-text-secondary text-sm md:text-base font-instrument leading-relaxed mb-6">
+                    {proto.description}
+                  </p>
+                </div>
+
+                <a
+                  href={proto.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-dm-mono text-[11px] uppercase tracking-[2px] text-accent-fix group-hover:text-accent-hover transition-colors inline-flex items-center gap-2 mt-auto"
+                >
+                  Visit Prototype <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                </a>
+              </div>
             ))}
           </div>
         </section>
 
-        {/* Experience & Education Section */}
-        <section id="experience" className="py-24 md:py-64 max-w-[1700px] mx-auto px-6 md:px-8 relative z-10">
+        {/* SKILLS SECTION */}
+        <section id="skills" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
+          <SectionLabel>Core Expertise</SectionLabel>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24 mb-24 md:mb-40">
+            {skillCategories.map((cat, i) => (
+              <SkillCategory key={i} title={cat.title} skills={cat.skills} />
+            ))}
+          </div>
+
+          <SectionLabel>Systems & Bot Solutions</SectionLabel>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div>
+              <h3 className="font-instrument text-3xl md:text-5xl text-text-primary mb-6 leading-tight">
+                Simplifying business operations with <span className="text-accent-fix italic font-normal">custom bot agents</span>.
+              </h3>
+              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-6">
+                I build custom bots (Telegram bots, WhatsApp bots, and Discord bots) to optimize business administration. These solutions simplify operations by pulling complex database values and status events into real-time summaries.
+              </p>
+              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-8">
+                Whether it's compiling weekly operations feedback or monitoring complex servers, these custom agents enable business owners to stay in control from their favorite messaging platform.
+              </p>
+              <div className="border-t border-border-dim pt-8 flex gap-8">
+                <div>
+                  <div className="font-dm-mono text-[12px] uppercase tracking-[3px] text-accent-fix mb-1">Telegram / WhatsApp / Discord</div>
+                  <div className="text-text-primary text-lg md:text-xl font-instrument">Multi-platform support for remote operations</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface/20 border border-border-dim rounded-xl p-8 md:p-12 relative overflow-hidden group hover:border-accent-fix/30 transition-all">
+              <div className="absolute top-[-10%] right-[-10%] w-[30%] h-[30%] bg-accent/5 rounded-full blur-[50px]" />
+              <h4 className="font-dm-mono text-[12px] uppercase tracking-[4px] text-accent-fix mb-8">System Solution Breakdown</h4>
+              
+              <ul className="flex flex-col gap-6 font-instrument">
+                <li className="flex items-start gap-4">
+                  <span className="text-accent-fix mt-1">✔</span>
+                  <div>
+                    <strong className="text-text-primary block text-lg font-medium">Weekly Reports</strong>
+                    <span className="text-text-secondary">Simplifies complex operations data into short, digestible text summaries.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-accent-fix mt-1">✔</span>
+                  <div>
+                    <strong className="text-text-primary block text-lg font-medium">Employee Status</strong>
+                    <span className="text-text-secondary">Monitors active employee shifts and schedules.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-accent-fix mt-1">✔</span>
+                  <div>
+                    <strong className="text-text-primary block text-lg font-medium">Inventory & Products</strong>
+                    <span className="text-text-secondary">Syncs with catalogs to notify on low stock or update item indexes.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="text-accent-fix mt-1">✔</span>
+                  <div>
+                    <strong className="text-text-primary block text-lg font-medium">System Health</strong>
+                    <span className="text-text-secondary">Sends instant alerts on server load, website downtime, and database status.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* EXPERIENCE & EDUCATION SECTION */}
+        <section id="experience" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
           <EducationBlock />
 
-          <div className="mt-32 md:mt-64">
+          <div className="mt-32 md:mt-48">
             <SectionLabel>Professional History</SectionLabel>
             <div className="flex flex-col gap-4 md:gap-6">
               {experience.map((exp, i) => (
@@ -548,7 +736,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="mt-40 md:mt-80">
+          <div className="mt-40 md:mt-64">
             <SectionLabel>Certifications & Milestones</SectionLabel>
             <p className="text-text-secondary text-xl md:text-2xl mb-12 max-w-4xl font-instrument leading-relaxed">
               Continuous learning and competitive participation drive my technical growth. Here are some of my key credentials and achievements.
@@ -561,8 +749,8 @@ export default function App() {
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="pt-24 md:pt-64 pb-12 md:pb-24 max-w-[1700px] mx-auto px-6 md:px-8 text-center border-t border-border-dim mt-24 md:mt-48 relative z-10">
+        {/* CONTACT SECTION */}
+        <section id="contact" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 text-center border-t border-border-dim relative">
           <SectionLabel>Global Connect</SectionLabel>
 
           <h2 className="font-instrument italic text-4xl md:text-8xl text-text-primary mb-12 md:mb-20 leading-tight">
@@ -571,7 +759,7 @@ export default function App() {
 
           <a
             href="mailto:murliprajpatiofficial@zohomail.in"
-            className="font-bebas text-[clamp(1rem,5.5vw,5.5rem)] text-text-primary block mb-24 md:mb-32 tracking-[1px] md:tracking-[4px] whitespace-nowrap select-all max-w-full px-6 overflow-hidden text-ellipsis"
+            className="font-bebas text-[clamp(1rem,5.5vw,5.5rem)] text-text-primary block mb-24 md:mb-32 tracking-[1px] md:tracking-[4px] whitespace-nowrap select-all max-w-full px-6 overflow-hidden text-ellipsis hover:text-accent-fix transition-colors"
           >
             murliprajpatiofficial@zohomail.in
           </a>
@@ -590,18 +778,25 @@ export default function App() {
               <Youtube size={32} className="md:w-12 md:h-12" />
             </a>
           </div>
-
-          <footer className="pt-8 md:pt-12 border-t border-border-dim/30 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
-            <p className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[8px] text-accent-fix/60">© 2026 MURLI PRAJAPATI · CO-FOUNDER @ BIELCO</p>
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-text-secondary hover:text-accent-fix transition-all flex items-center gap-3 md:gap-4 interactive group"
-            >
-              Back to top <div className="w-10 md:w-12 h-px bg-text-secondary group-hover:bg-accent-fix group-hover:w-16 md:group-hover:w-20 transition-all"></div>
-            </button>
-          </footer>
         </section>
+
       </main>
+
+      {/* Global Footer */}
+      <footer className="max-w-[1700px] mx-auto px-6 md:px-8 pb-12 md:pb-24 relative z-10">
+        <div className="pt-8 md:pt-12 border-t border-border-dim/30 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
+          <p className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[8px] text-accent-fix/60">
+            © 2026 MURLI PRAJAPATI · CO-FOUNDER @ BIELCO
+          </p>
+
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-text-secondary hover:text-accent-fix transition-all flex items-center gap-3 md:gap-4 interactive group"
+          >
+            Back to top <div className="w-10 md:w-12 h-px bg-text-secondary group-hover:bg-accent-fix group-hover:w-16 md:group-hover:w-20 transition-all"></div>
+          </button>
+        </div>
+      </footer>
 
       {/* Certificate Modal */}
       <AnimatePresence>
@@ -618,19 +813,17 @@ export default function App() {
                 <h3 className="text-text-primary font-dm-mono uppercase tracking-[2px]">Yuva AI Certificate</h3>
                 <button
                   onClick={() => setShowCert(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-accent-fix hover:bg-surface transition-all"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-accent-fix hover:bg-surface transition-all cursor-pointer"
                 >
                   ✕
                 </button>
               </div>
               <div className="w-full flex-1 relative bg-surface">
-                {/* PDF Viewer - Disabling toolbar to make download harder */}
                 <iframe
                   src="/futureskills.pdf#toolbar=0&navpanes=0&scrollbar=0"
                   className="w-full h-full border-none"
                   title="Yuva AI Certificate"
                 />
-                {/* Transparent overlay over the iframe to prevent right clicks and interactions that could lead to download */}
                 <div
                   className="absolute inset-0 z-10"
                   onContextMenu={(e) => e.preventDefault()}

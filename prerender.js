@@ -19,25 +19,27 @@ if (!fs.existsSync(indexHtmlPath)) {
 // Read the compiled base HTML template
 const originalHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
-// ==========================================
-// 1. ROUTE DEFINITIONS CONFIGURATION
-// Add all of your application pages here.
-// ==========================================
+// Route Definitions Configuration
 const routes = [
   {
     path: '/about',
-    title: 'About Murli Prajapati | Education & Robotics Background',
-    description: 'Discover Murli Prajapati\'s academic journey at CM Shri School, MVPP scholarship qualification, and school robotics achievements.',
+    title: 'About Murli Prajapati | Co-Founder of Bielco & Developer',
+    description: 'Discover Murli Prajapati\'s academic journey at CM Shri School, MVPP scholarship, robotics achievements, and role as Co-Founder of Bielco.',
   },
   {
-    path: '/services',
-    title: 'Full Stack & AI Automation Services | Beilco Agency',
-    description: 'Explore web engineering and AI automation services provided by Murli Prajapati and Beilco: React, Next.js, and n8n workflows.',
+    path: '/projects',
+    title: 'Projects & Interactive Prototypes | Murli Prajapati',
+    description: 'Browse production platforms like Bielco Agency and Ominiflow, alongside 8 interactive website prototypes built by Murli Prajapati.',
+  },
+  {
+    path: '/skills',
+    title: 'Skills, Bot Development & Business Systems | Murli Prajapati',
+    description: 'Explore Murli Prajapati\'s capabilities: Web Development, UI/UX Design, Video Editing, and custom business bot systems (Telegram, WhatsApp, Discord).',
   },
   {
     path: '/contact',
-    title: 'Contact Murli Prajapati | Founder of Beilco Agency',
-    description: 'Get in touch with Murli Prajapati at murliprajpatiofficial@zohomail.in or connect via LinkedIn and GitHub for custom software projects.',
+    title: 'Contact Murli Prajapati | Co-Founder of Bielco',
+    description: 'Get in touch with Murli Prajapati at murliprajpatiofficial@zohomail.in or connect via LinkedIn and GitHub for custom software and bot systems.',
   },
   {
     path: '/privacy-policy',
@@ -56,10 +58,7 @@ const routes = [
   }
 ];
 
-// ==========================================
-// 2. SEO META INJECTION LOGIC
-// Uses RegExp to locate and replace tags dynamically.
-// ==========================================
+// SEO Meta Injection Logic
 function injectSEO(html, route) {
   let newHtml = html;
   const siteDomain = 'https://murliprajapati.pages.dev';
@@ -88,10 +87,7 @@ function injectSEO(html, route) {
   return newHtml;
 }
 
-// ==========================================
-// 3. STATIC DIRECTORY GENERATOR
-// Iterates routes, makes subdirectories, and writes index.html.
-// ==========================================
+// Static Directory Generator
 routes.forEach(route => {
   // strip leading slash for path generation
   const routeDir = path.join(distPath, route.path.substring(1));
