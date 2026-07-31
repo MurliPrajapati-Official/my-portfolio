@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Sitemap for Murli Prajapati Portfolio -->
+<!--
+  Official Social Media Profiles & Verification Handles:
+  - GitHub: https://github.com/MurliPrajapati-Official
+  - LinkedIn: https://www.linkedin.com/in/murli-prajapatiofficial/
+  - Instagram: https://www.instagram.com/murliprajapati.in/
+  - YouTube: https://www.youtube.com/@Dravynz
+-->
 <urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
@@ -9,15 +17,20 @@
   <!-- Main Homepage (Priority 1.0) -->
   <url>
     <loc>https://murliprajapati.pages.dev/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://murliprajapati.pages.dev/pixelart.jpg</image:loc>
+      <image:title>Murli Prajapati Portfolio Pixel Art Avatar</image:title>
+      <image:caption>Official Pixel Art Avatar for Murli Prajapati - Web Developer, UI/UX Designer &amp; Bot Systems Creator</image:caption>
+    </image:image>
   </url>
 
   <!-- Core Page: About (Priority 0.8) -->
   <url>
     <loc>https://murliprajapati.pages.dev/about/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -25,7 +38,7 @@
   <!-- Core Page: Projects (Priority 0.8) -->
   <url>
     <loc>https://murliprajapati.pages.dev/projects/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -33,7 +46,7 @@
   <!-- Core Page: Skills (Priority 0.8) -->
   <url>
     <loc>https://murliprajapati.pages.dev/skills/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -41,7 +54,7 @@
   <!-- Core Page: Contact (Priority 0.8) -->
   <url>
     <loc>https://murliprajapati.pages.dev/contact/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -49,7 +62,7 @@
   <!-- Legal Page: Privacy Policy (Priority 0.5) -->
   <url>
     <loc>https://murliprajapati.pages.dev/privacy-policy/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.50</priority>
   </url>
@@ -57,7 +70,7 @@
   <!-- Legal Page: Terms of Service (Priority 0.5) -->
   <url>
     <loc>https://murliprajapati.pages.dev/terms/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.50</priority>
   </url>
@@ -65,9 +78,38 @@
   <!-- Legal Page: Cookie Policy (Priority 0.5) -->
   <url>
     <loc>https://murliprajapati.pages.dev/cookie-policy/</loc>
-    <lastmod>2026-05-26T12:00:00+00:00</lastmod>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.50</priority>
+  </url>
+
+  <!-- Official Social Media Profiles -->
+  <url>
+    <loc>https://github.com/MurliPrajapati-Official</loc>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.linkedin.com/in/murli-prajapatiofficial/</loc>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.instagram.com/murliprajapati.in/</loc>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.youtube.com/@Dravynz</loc>
+    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
 
 </urlset>

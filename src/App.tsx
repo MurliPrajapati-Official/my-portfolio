@@ -545,19 +545,28 @@ export default function App() {
                 <div className="w-2.5 h-2.5 rounded-full bg-accent-fix animate-pulse"></div>
                 <span className="font-dm-mono text-[11px] uppercase tracking-[3px] text-accent-fix">AEO Summary / Quick Profile Index</span>
               </div>
-              <h3 className="text-2xl md:text-3xl text-text-primary font-medium mb-4 font-instrument">Murli Prajapati Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-secondary font-instrument text-base md:text-lg">
-                <div>
-                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Roles</strong>
-                  Web Developer, UI/UX Designer, Video Editor, Bot Systems Creator.
-                </div>
-                <div>
-                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Founding Member</strong>
-                  Co-Founder at Bielco (<a href="https://www.bielco.in" target="_blank" rel="noopener noreferrer" className="text-accent-fix underline">www.bielco.in</a>).
-                </div>
-                <div className="md:col-span-2">
-                  <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Systems Solutions</strong>
-                  Creates custom automation bot agents (Telegram, WhatsApp, Discord) that simplify weekly business reports (mapping inventory, products, employee status, and system health).
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                <img
+                  src="/pixelart.jpg"
+                  alt="Murli Prajapati Pixel Art Avatar"
+                  className="w-24 h-24 md:w-28 md:h-28 rounded-lg object-cover border-2 border-accent-fix shadow-lg shrink-0"
+                />
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl text-text-primary font-medium mb-4 font-instrument">Murli Prajapati Summary</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-secondary font-instrument text-base md:text-lg">
+                    <div>
+                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Roles</strong>
+                      Web Developer, UI/UX Designer, Video Editor, Bot Systems Creator.
+                    </div>
+                    <div>
+                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Founding Member</strong>
+                      Co-Founder at Bielco (<a href="https://www.bielco.in" target="_blank" rel="noopener noreferrer" className="text-accent-fix underline">www.bielco.in</a>).
+                    </div>
+                    <div className="md:col-span-2">
+                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Systems Solutions</strong>
+                      Creates custom automation bot agents (Telegram, WhatsApp, Discord) that simplify weekly business reports (mapping inventory, products, employee status, and system health).
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -594,11 +603,16 @@ export default function App() {
             <div className="relative group mt-8 lg:mt-0">
               <div className="absolute inset-0 bg-accent-fix translate-x-4 translate-y-4 rounded-lg transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"></div>
               <div className="relative bg-surface border border-border-dim p-8 md:p-12 rounded-lg z-10 flex flex-col items-center justify-center min-h-[400px]">
-                <div className="w-24 h-24 rounded-full bg-accent/10 flex items-center justify-center text-accent-fix mb-8 group-hover:scale-110 transition-transform duration-500">
-                  <Bot size={48} />
+                <div className="w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-accent-fix mb-6 group-hover:scale-105 transition-transform duration-500 shadow-2xl relative bg-black/40">
+                  <img
+                    src="/pixelart.jpg"
+                    alt="Murli Prajapati Pixel Art Portrait"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-black mb-4 text-center">Tech Enthusiast</h4>
-                <p className="text-black text-center text-lg font-instrument">
+                <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-black mb-2 text-center font-bold">Murli Prajapati</h4>
+                <p className="font-dm-mono text-xs md:text-sm uppercase tracking-[2px] text-black/80 text-center mb-6 font-semibold">Co-Founder @ Bielco · Web &amp; Bot Developer</p>
+                <p className="text-black text-center text-base md:text-lg font-instrument font-medium">
                   Whether it's building complex React applications, setting up bot systems, or designing conversion-oriented user flows, I thrive on building tools that simplify operations.
                 </p>
               </div>
@@ -765,17 +779,21 @@ export default function App() {
           </a>
 
           <div className="flex justify-center items-center gap-12 md:gap-24 mb-32 md:mb-48">
-            <a href="https://github.com/MurliPrajapati-Official" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
+            <a href="https://github.com/MurliPrajapati-Official" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
               <Github size={32} className="md:w-12 md:h-12" />
+              <span className="sr-only">GitHub Profile</span>
             </a>
-            <a href="https://www.linkedin.com/in/murli-prajapatiofficial/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
+            <a href="https://www.linkedin.com/in/murli-prajapatiofficial/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
               <Linkedin size={32} className="md:w-12 md:h-12" />
+              <span className="sr-only">LinkedIn Profile</span>
             </a>
-            <a href="https://www.instagram.com/murliprajapati.in/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
+            <a href="https://www.instagram.com/murliprajapati.in/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile" title="Instagram" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
               <Instagram size={32} className="md:w-12 md:h-12" />
+              <span className="sr-only">Instagram Profile</span>
             </a>
-            <a href="https://www.youtube.com/@Dravynz" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
+            <a href="https://www.youtube.com/@Dravynz" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel" title="YouTube" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
               <Youtube size={32} className="md:w-12 md:h-12" />
+              <span className="sr-only">YouTube Channel</span>
             </a>
           </div>
         </section>
