@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Sitemap for Murli Prajapati Portfolio -->
-<!--
-  Official Social Media Profiles & Verification Handles:
-  - GitHub: https://github.com/MurliPrajapati-Official
-  - LinkedIn: https://www.linkedin.com/in/murli-prajapatiofficial/
-  - Instagram: https://www.instagram.com/murliprajapati.in/
-  - YouTube: https://www.youtube.com/@Dravynz
--->
 <urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
       xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
@@ -81,35 +74,6 @@
     <lastmod>2026-07-31T12:00:00+00:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.50</priority>
-  </url>
-
-  <!-- Official Social Media Profiles -->
-  <url>
-    <loc>https://github.com/MurliPrajapati-Official</loc>
-    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-
-  <url>
-    <loc>https://www.linkedin.com/in/murli-prajapatiofficial/</loc>
-    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-
-  <url>
-    <loc>https://www.instagram.com/murliprajapati.in/</loc>
-    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-
-  <url>
-    <loc>https://www.youtube.com/@Dravynz</loc>
-    <lastmod>2026-07-31T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
   </url>
 
 </urlset>
