@@ -13,12 +13,6 @@ interface Project {
   link: string;
 }
 
-interface PrototypeProject {
-  title: string;
-  link: string;
-  description: string;
-  tags: string[];
-}
 
 interface Experience {
   company: string;
@@ -321,9 +315,9 @@ export default function App() {
       tags: ["E-commerce", "Cloudflare", "React"],
       description: "A modern digital storefront optimized for rapid delivery and performance. Features a seamless shopping experience with serverless backend logic.",
       details: [
-        "Optimized front-end rendering leading to a perfect 100 lighthouse performance score.",
+        "Optimized front-end rendering leading to a perfect performance score.",
         "Implemented complex e-commerce logic including cart state management and secure checkout.",
-        "Deployed on Cloudflare Workers for ultra-low latency edge computing."
+        "Build complete admin dashboard for seamless connection between managing the website and business."
       ],
       link: "http://uniformtrends.pages.dev/"
     },
@@ -331,11 +325,11 @@ export default function App() {
       id: "2",
       number: "02",
       title: "Bielco Agency",
-      tags: ["Next.js", "Motion", "Business"],
+      tags: ["React", "Seo", "Business"],
       description: "The digital heartbeat of Bielco. Designed to convert small business challenges into global growth opportunities through high-end engineering.",
       details: [
-        "Designed a high-end, motion-rich user interface using Framer Motion and Next.js.",
-        "Architected a scalable content management system allowing the team to easily update case studies.",
+        "Designed a high-end, motion-rich user interface using Framer Motion and React.",
+        "Used coustom premium design for creating interactive user experience.",
         "Integrated advanced SEO strategies ensuring top ranking for targeted local business keywords."
       ],
       link: "https://www.bielco.in"
@@ -343,69 +337,18 @@ export default function App() {
     {
       id: "3",
       number: "03",
-      title: "Ominiflow",
+      title: "Portaleap",
       tags: ["B2B SaaS", "Product", "Web"],
       description: "A comprehensive B2B SaaS product designed to streamline workflows and optimize business operations.",
       details: [
-        "Developed a comprehensive B2B SaaS dashboard tailored for workflow automation.",
-        "Integrated complex multi-tenant data structures to ensure complete isolation between enterprise clients.",
-        "Built custom API endpoints to allow seamless integrations with third-party enterprise tools."
+        "Developed a comprehensive B2B SaaS dashboard tailored for document automation.",
+        "Integrated multi data structures to ensure smooth flow in the documentation between enterprises.",
+        "Build coustom tags and workspaces for multple management under one platform"
       ],
-      link: "https://ominiflow.pages.dev/#pricing"
+      link: "https://portaleap.pages.dev/"
     }
   ];
 
-  // --- Factual Prototype Websites ---
-  const prototypes: PrototypeProject[] = [
-    {
-      title: "Bielco Prototype Website 1",
-      link: "https://proto1-bielco.edgeone.dev/",
-      description: "Custom interactive web layout and responsive component prototype built for client showcase.",
-      tags: ["Prototype", "Layout", "Vite"]
-    },
-    {
-      title: "Bielco Prototype Website 2",
-      link: "https://proto2-bielco.edgeone.dev/",
-      description: "Responsive interface design template outlining digital agency core services.",
-      tags: ["Prototype", "CSS", "Vite"]
-    },
-    {
-      title: "Bielco Prototype Website 3",
-      link: "https://proto3-bielco.edgeone.dev/",
-      description: "Polished landing layout presenting animated UI interaction patterns.",
-      tags: ["Prototype", "Motion", "React"]
-    },
-    {
-      title: "Bielco Prototype Website 4",
-      link: "https://proto4-bielco.edgeone.dev/",
-      description: "Clean business showcase prototype with high-end typography and interactive cards.",
-      tags: ["Prototype", "Design System"]
-    },
-    {
-      title: "Bielco Prototype Website 5",
-      link: "https://proto5-bielco.edgeone.dev/",
-      description: "Vibrant dark-mode layout exploration built to demonstrate modern visual frameworks.",
-      tags: ["Prototype", "Dark Mode"]
-    },
-    {
-      title: "Bielco Prototype Website 6",
-      link: "https://proto6-bielco.edgeone.dev/",
-      description: "Component structure prototype focusing on fluid grid layouts and responsive menus.",
-      tags: ["Prototype", "Responsive", "React"]
-    },
-    {
-      title: "Basho Prototype",
-      link: "https://basho.pages.dev/",
-      description: "Modern landing prototype implementing smooth page-level transition animations.",
-      tags: ["Prototype", "Transitions", "React"]
-    },
-    {
-      title: "Metro Grill Restobar Rohini",
-      link: "https://metro-grill-restobar-rohini.pages.dev/",
-      description: "A complete restaurant landing prototype showcasing menus, timings, and custom food display sections.",
-      tags: ["Prototype", "Restobar", "Vite"]
-    }
-  ];
 
   const experience: Experience[] = [
     {
@@ -493,7 +436,7 @@ export default function App() {
 
       {/* Sequential Single-Page Content Area */}
       <main className="relative z-10 pt-20">
-        
+
         {/* HERO SECTION */}
         <section className="min-h-[90vh] md:min-h-screen flex flex-col justify-center max-w-[1700px] mx-auto px-6 md:px-8 pt-20 md:pt-24 relative">
           <motion.div
@@ -541,8 +484,7 @@ export default function App() {
 
             {/* AEO Search Summary Card */}
             <div className="bg-surface/30 border border-border-dim rounded-lg p-6 md:p-10 max-w-4xl hover:border-accent-fix/30 transition-colors">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-2.5 h-2.5 rounded-full bg-accent-fix animate-pulse"></div>
+              <div className="mb-6">
                 <span className="font-dm-mono text-[11px] uppercase tracking-[3px] text-accent-fix">AEO Summary / Quick Profile Index</span>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
@@ -629,44 +571,52 @@ export default function App() {
             ))}
           </div>
 
-          <SectionLabel>Interactive Prototypes</SectionLabel>
-          <p className="text-text-secondary text-lg md:text-2xl font-instrument mb-12 max-w-3xl leading-relaxed">
-            A selection of experimental systems, restaurant portals, and web interface prototypes built using responsive frameworks.
-          </p>
+          <SectionLabel>Interactive Prototypes &amp; Web Showcase</SectionLabel>
+          <div className="relative group overflow-hidden rounded-2xl border border-border-dim bg-surface/30 hover:border-accent-fix/50 transition-all duration-500 p-8 md:p-14 shadow-2xl">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent-fix/5 rounded-full blur-[100px] pointer-events-none group-hover:bg-accent-fix/10 transition-all duration-700" />
+            <div className="absolute bottom-[-20%] left-[-10%] w-[350px] h-[350px] bg-accent-fix/5 rounded-full blur-[80px] pointer-events-none" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {prototypes.map((proto, idx) => (
-              <div
-                key={idx}
-                className="bg-surface/30 border border-border-dim hover:border-accent-fix/40 p-6 md:p-8 rounded-sm transition-all duration-300 group flex flex-col justify-between min-h-[220px]"
-              >
-                <div>
-                  <div className="flex justify-between items-start mb-6">
-                    <span className="font-dm-mono text-[11px] text-accent-fix font-bold uppercase tracking-[2px]">0{idx + 1}</span>
-                    <div className="flex flex-wrap gap-1.5 justify-end">
-                      {proto.tags.map(t => (
-                        <span key={t} className="font-jetbrains text-[9px] uppercase tracking-[1px] px-2 py-0.5 bg-accent/5 border border-accent/15 text-accent/70">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <h4 className="text-2xl text-text-primary font-instrument font-medium mb-3 group-hover:text-accent-fix transition-colors duration-300">{proto.title}</h4>
-                  <p className="text-text-secondary text-sm md:text-base font-instrument leading-relaxed mb-6">
-                    {proto.description}
-                  </p>
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+              <div className="max-w-3xl">
+                <div className="mb-6">
+                  <span className="font-dm-mono text-[11px] md:text-xs uppercase tracking-[3px] text-accent-fix">
+                    prototype.bielco.in
+                  </span>
                 </div>
 
+                <h3 className="text-3xl md:text-5xl lg:text-6xl font-instrument text-text-primary mb-6 leading-tight group-hover:text-accent-fix transition-colors duration-500">
+                  Explore All Interactive Web Prototypes &amp; Projects
+                </h3>
+
+                <p className="text-text-secondary text-lg md:text-2xl font-instrument leading-relaxed mb-8 max-w-2xl">
+                  A centralized live directory showcasing my complete collection of client prototypes, experimental web systems, restaurant portals, and motion-driven user interfaces.
+                </p>
+
+                <div className="flex flex-wrap gap-2 md:gap-3">
+                  {["All Web Projects", "Live Demos", "Restaurant Portals", "Agency Showcases", "Responsive Frameworks", "UI/UX Concepts"].map((tag) => (
+                    <span key={tag} className="font-jetbrains text-[10px] md:text-[11px] uppercase tracking-[1px] px-3 py-1.5 bg-surface/80 border border-border-dim text-text-secondary group-hover:border-accent-fix/30 group-hover:text-text-primary transition-colors">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-center shrink-0 gap-4">
                 <a
-                  href={proto.link}
+                  href="https://prototype.bielco.in/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-dm-mono text-[11px] uppercase tracking-[2px] text-accent-fix group-hover:text-accent-hover transition-colors inline-flex items-center gap-2 mt-auto"
+                  className="interactive inline-flex items-center justify-center gap-3 px-8 py-5 bg-accent-fix text-black font-dm-mono text-sm md:text-base font-bold uppercase tracking-[2px] rounded-lg shadow-xl hover:bg-accent-hover hover:scale-105 active:scale-95 transition-all duration-300 w-full sm:w-auto text-center cursor-pointer"
                 >
-                  Visit Prototype <ArrowUpRight size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  Launch Prototypes Hub
+                  <ArrowUpRight size={20} className="stroke-[2.5] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </a>
+                <span className="font-dm-mono text-[11px] uppercase tracking-[2px] text-text-secondary lg:text-right">
+                  Opens live portal in new tab ↗
+                </span>
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
@@ -702,7 +652,7 @@ export default function App() {
             <div className="bg-surface/20 border border-border-dim rounded-xl p-8 md:p-12 relative overflow-hidden group hover:border-accent-fix/30 transition-all">
               <div className="absolute top-[-10%] right-[-10%] w-[30%] h-[30%] bg-accent/5 rounded-full blur-[50px]" />
               <h4 className="font-dm-mono text-[12px] uppercase tracking-[4px] text-accent-fix mb-8">System Solution Breakdown</h4>
-              
+
               <ul className="flex flex-col gap-6 font-instrument">
                 <li className="flex items-start gap-4">
                   <span className="text-accent-fix mt-1">✔</span>
