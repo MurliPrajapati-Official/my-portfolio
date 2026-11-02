@@ -29,12 +29,22 @@ const routes = [
   {
     path: '/projects',
     title: 'Projects & Interactive Prototypes | Murli Prajapati',
-    description: 'Browse production platforms like Bielco Agency and Ominiflow, alongside 8 interactive website prototypes built by Murli Prajapati.',
+    description: '14 live projects built by Murli Prajapati — Daily Drama, Divine Herbalife, Uniform Trends, NutriScan, Portaleap, KODEX, Em Connect, Optiq, Presence and more.',
   },
   {
     path: '/skills',
     title: 'Skills, Bot Development & Business Systems | Murli Prajapati',
     description: 'Explore Murli Prajapati\'s capabilities: Web Development, UI/UX Design, Video Editing, and custom business bot systems (Telegram, WhatsApp, Discord).',
+  },
+  {
+    path: '/experience',
+    title: 'Experience & Education | Murli Prajapati',
+    description: 'Murli Prajapati’s experience as Co-Founder of Bielco and Editor at Hoollow, plus education at CM Shri School, MVPP scholarship and robotics honours.',
+  },
+  {
+    path: '/certificates',
+    title: 'Certificates | Murli Prajapati',
+    description: 'Certificates earned by Murli Prajapati: Adobe Generative AI Content Creation, be10x AI Tools & Claude Workshop, Hoollow Certificate of Employment, and Yuva AI for All (IndiaAI × Nasscom).',
   },
   {
     path: '/contact',

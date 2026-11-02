@@ -1,58 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
-:root {
-  --font-bebas: "Bebas Neue", sans-serif;
-  --font-dm-mono: "DM Mono", monospace;
-  --font-instrument: "Instrument Serif", serif;
-  --font-jetbrains: "JetBrains Mono", monospace;
+/*
+  Palette — Color Hunt #FAF7F0 · #D8D2C2 · #B17457 · #4A4947
+  https://colorhunt.co/palette/faf7f0d8d2c2b174574a4947
+  Extended with a deeper ink for body contrast and a darker clay for accessible accent text.
+*/
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "Instrument Serif", Georgia, serif;
 
-  --color-bg-primary: #0A0A0A;
-  --color-bg-secondary: #111111;
-  --color-surface: #161616;
-  --color-border-dim: #222222;
-  --color-text-primary: #F0F0F0;
-  --color-text-secondary: #666666;
-  --color-text-tertiary: #333333;
-  --color-accent: #E8FF47;
-  --color-accent-hover: #D4EB3A;
-  --color-error: #FF4444;
-}
+  --color-paper: #FAF7F0;      /* page */
+  --color-paper-2: #F3EEE3;    /* raised surface */
+  --color-stone: #D8D2C2;      /* hairlines, borders */
+  --color-clay: #B17457;       /* accent (decorative, large type) */
+  --color-clay-ink: #8E5539;   /* accent for small text, AA on paper */
+  --color-graphite: #4A4947;   /* secondary text */
+  --color-ink: #1C1B1A;        /* primary text, dark sections */
+  --color-ink-2: #2A2927;      /* raised surface on ink */
 
-/* Fallback class to guarantee the green color works */
-.text-accent-fix {
-  color: #E8FF47 !important;
-}
-.bg-accent-fix {
-  background-color: #E8FF47 !important;
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-primary);
-    font-family: var(--font-instrument);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  body::selection {
-    background-color: var(--color-accent);
-    color: var(--color-bg-primary);
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-.custom-cursor {
-  width: 12px;
-  height: 12px;
-  background-color: var(--color-accent);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s ease-out;
-}
+@layer components {
+  /* Fluid, full-bleed page gutter — the layout uses the whole screen. */
+  .px-site {
+    padding-inline: clamp(1.25rem, 3.5vw, 5rem);
+  }
 
-.custom-cursor-hover {
-  transform: scale(4);
-  mix-blend-mode: difference;
+  /* Underline that draws in on hover — used for inline text links */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-apple);
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
 }
-

@@ -1,807 +1,549 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
-import { Github, Linkedin, Youtube, Instagram, ArrowUpRight, Mail, Download, Sparkles, Layout, Server, Bot, Video, Lightbulb, Zap, Globe, Shield } from 'lucide-react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { motion, MotionConfig, AnimatePresence, useReducedMotion, useScroll, useTransform, useSpring } from 'motion/react';
+import { ArrowUpRight, ArrowDown, ArrowUp, Menu, X, Mail, Copy, Check } from 'lucide-react';
+import { InfiniteSlider } from './components/motion-primitives/infinite-slider';
+import { TextEffect } from './components/motion-primitives/text-effect';
+import {
+  MorphingDialog,
+  MorphingDialogTrigger,
+  MorphingDialogContent,
+  MorphingDialogContainer,
+  MorphingDialogImage,
+  MorphingDialogTitle,
+  MorphingDialogSubtitle,
+  MorphingDialogClose,
+} from './components/motion-primitives/morphing-dialog';
+import { projects, experience, education, certificates, socials, EMAIL, type Project } from './content';
 
-// --- Types ---
-interface Project {
-  id: string;
-  number: string;
-  title: string;
-  tags: string[];
-  description: string;
-  details?: string[];
-  link: string;
-}
+const EASE = [0.22, 1, 0.36, 1] as const;
 
+const NAV = [
+  { label: 'Work', href: '#work' },
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Certificates', href: '#certificates' },
+];
 
-interface Experience {
-  company: string;
-  role: string;
-  dates: string;
-  bullets: string[];
-}
+const CAPABILITIES = ['Web Development', 'UI/UX Design', 'AI Agents & Bots', 'SEO & AEO', 'Business Systems', 'Video Editing'];
 
-interface Skill {
-  title: string;
-  details: string;
-  icon: React.ReactNode;
-}
+// ---------- Nav ----------
 
-// --- Components ---
-
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+const Nav = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    const updateHover = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      setIsHovering(!!target.closest('a, button, .interactive'));
-    };
-
-    window.addEventListener('mousemove', updatePosition);
-    window.addEventListener('mouseover', updateHover);
-    return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      window.removeEventListener('mouseover', updateHover);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
-    <div
-      className={`custom-cursor hidden md:block ${isHovering ? 'custom-cursor-hover' : ''}`}
-      style={{ left: `${position.x}px`, top: `${position.y}px`, transition: 'transform 0.15s ease-out, background-color 0.3s ease' }}
+    <header className={`fixed inset-x-0 top-0 z-50 bg-paper transition-[border-color] duration-500 border-b ${scrolled || open ? 'border-stone' : 'border-transparent'}`}>
+      <nav className="px-site flex h-16 items-center justify-between" aria-label="Primary">
+        <a href="#top" onClick={() => setOpen(false)} className="text-[15px] font-semibold tracking-[-0.01em]">Murli Prajapati</a>
+        <ul className="hidden md:flex items-center gap-10">
+          {NAV.map((n) => (
+            <li key={n.href}><a href={n.href} className="text-[15px] text-ink/75 transition-colors duration-300 hover:text-ink">{n.label}</a></li>
+          ))}
+          <li>
+            <a href="#contact" className="group inline-flex h-11 items-center gap-2 rounded-full bg-ink pl-5 pr-4 text-[15px] font-medium text-paper transition-colors duration-300 hover:bg-graphite">
+              Contact
+              <ArrowUpRight size={16} strokeWidth={2} className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+            </a>
+          </li>
+        </ul>
+        <button
+          type="button"
+          className="md:hidden -mr-2 inline-flex h-10 w-10 items-center justify-center"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          onClick={() => setOpen((o) => !o)}
+        >
+          {open ? <X size={20} strokeWidth={1.75} /> : <Menu size={20} strokeWidth={1.75} />}
+        </button>
+      </nav>
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            id="mobile-menu"
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.45, ease: EASE }}
+            className="px-site md:hidden overflow-hidden"
+          >
+            {[...NAV, { label: 'Contact', href: '#contact' }].map((n) => (
+              <li key={n.href} className="border-t border-stone first:border-t-0">
+                <a href={n.href} onClick={() => setOpen(false)} className="block py-4 text-3xl font-semibold tracking-[-0.03em]">{n.label}</a>
+              </li>
+            ))}
+            <li className="border-t border-stone py-5"><SocialIcons /></li>
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+};
+
+// ---------- Social buttons (logos via 21st `logo` → svgl.app) ----------
+
+const SocialIcons = () => (
+  <ul className="flex items-center gap-2.5" aria-label="Social profiles">
+    {socials.map((s) => (
+      <li key={s.label}>
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Murli Prajapati on ${s.label}`}
+          title={s.label}
+          className="inline-flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full border-[1.5px] border-stone bg-white transition-[transform,border-color] duration-300 ease-[var(--ease-apple)] hover:-translate-y-1 hover:border-ink"
+        >
+          <img src={s.icon} alt="" width={24} height={24} className="h-6 w-6 object-contain" />
+        </a>
+      </li>
+    ))}
+  </ul>
+);
+
+// ---------- Hero ----------
+
+const Hero = () => (
+  <section id="top" className="px-site flex min-h-[78svh] md:min-h-[100svh] flex-col pt-16">
+    <div className="flex items-start justify-between gap-6 pt-8 md:pt-10 text-sm md:text-base text-graphite">
+      <p>Web developer &amp; UI/UX designer</p>
+      <p className="text-right">
+        <span className="mr-2 inline-block h-1.5 w-1.5 -translate-y-0.5 rounded-full bg-clay" aria-hidden />
+        Available for projects
+      </p>
+    </div>
+
+    <div className="@container mt-auto pb-10 md:pb-14">
+      <TextEffect
+        as="h1"
+        per="char"
+        className="-ml-[0.05em] whitespace-nowrap text-[calc(100cqi/6.3)] font-semibold leading-[0.86] tracking-[-0.06em]"
+        segmentWrapperClassName="overflow-hidden pb-[0.06em]"
+        variants={{
+          container: { hidden: {}, visible: { transition: { staggerChildren: 0.028, delayChildren: 0.15 } } },
+          item: { hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, ease: EASE } } },
+        }}
+      >
+        Murli Prajapati
+      </TextEffect>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: EASE, delay: 0.75 }}
+        className="mt-8 md:mt-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between"
+      >
+        <p className="max-w-[34ch] text-[clamp(1.25rem,1.9vw,2rem)] leading-[1.25] tracking-[-0.02em] text-graphite">
+          Co&#8209;founder of <a href="https://www.bielco.in" target="_blank" rel="noopener noreferrer" className="link-draw text-ink">Bielco</a>.
+          I design and build websites, products and bots that make businesses{' '}
+          <em className="font-serif text-[1.1em] italic text-clay-ink">simpler</em>.
+        </p>
+        <div className="flex flex-col gap-4 md:items-end">
+          <div className="flex flex-wrap items-center gap-2.5 md:gap-3">
+            <a href="#work" className="group inline-flex h-14 md:h-16 items-center gap-2.5 md:gap-3 rounded-full bg-ink pl-6 pr-5 md:pl-7 md:pr-6 text-base md:text-lg font-medium text-paper transition-colors duration-300 hover:bg-graphite">
+              See the work
+              <ArrowDown size={20} strokeWidth={2} className="transition-transform duration-500 group-hover:translate-y-1" aria-hidden />
+            </a>
+            <a href={`mailto:${EMAIL}`} className="group inline-flex h-14 md:h-16 items-center gap-2.5 md:gap-3 rounded-full border-[1.5px] border-ink/80 px-5 md:px-7 text-base md:text-lg font-medium transition-colors duration-300 hover:bg-ink hover:text-paper">
+              <Mail size={20} strokeWidth={1.75} aria-hidden />
+              Email me
+            </a>
+          </div>
+          <SocialIcons />
+        </div>
+      </motion.div>
+    </div>
+  </section>
+);
+
+// ---------- Capabilities marquee (21st: Infinite Slider) ----------
+
+const Marquee = () => (
+  <section aria-label="Capabilities" className="border-y border-stone py-6 md:py-8">
+    <h2 className="sr-only">Capabilities</h2>
+    <InfiniteSlider gap={0} speed={60} speedOnHover={20}>
+      {CAPABILITIES.map((c) => (
+        <span key={c} className="flex items-center whitespace-nowrap text-[clamp(1.75rem,4vw,4rem)] font-semibold tracking-[-0.04em]">
+          {c}
+          <span className="mx-[0.6em] text-clay" aria-hidden>✳</span>
+        </span>
+      ))}
+    </InfiniteSlider>
+  </section>
+);
+
+// ---------- Work: horizontal scroll gallery ----------
+// Vertical scrolling drives the track sideways (sticky scroll-linked carousel, the pattern
+// behind 21st.dev's horizontal-scroll sections), built with Framer Motion.
+
+const Preview = ({ p }: { p: Project }) => {
+  const ref = useRef<HTMLVideoElement>(null);
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || reduce) return;
+    const io = new IntersectionObserver(
+      ([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()),
+      { threshold: 0.35 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [reduce]);
+
+  return (
+    <video
+      ref={ref}
+      className="aspect-[16/10] w-full rounded-xl md:rounded-2xl border border-stone bg-paper-2 object-cover object-top transition-transform duration-[1200ms] ease-[var(--ease-apple)] group-hover:scale-[1.015]"
+      src={p.video}
+      poster={p.poster}
+      width={1280}
+      height={800}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={`Screen recording of the ${p.title} website by Murli Prajapati`}
     />
   );
 };
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <motion.h2
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="font-dm-mono text-lg md:text-2xl uppercase tracking-[4px] md:tracking-[8px] text-accent-fix mb-10 md:mb-16 flex items-center gap-4 md:gap-6"
+const ProjectCard = ({ p, onFocus }: { p: Project; onFocus?: (el: HTMLElement) => void }) => (
+  <a
+    href={p.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    onFocus={(e) => onFocus?.(e.currentTarget)}
+    className="group flex w-[86vw] shrink-0 flex-col sm:w-[min(62vw,calc((100svh-19rem)*1.6))] lg:w-[min(56vw,calc((100svh-19rem)*1.6))]"
   >
-    <span className="w-10 md:w-16 h-px bg-accent-fix"></span>
-    {children}
-  </motion.h2>
+    <div className="overflow-hidden rounded-xl md:rounded-2xl">
+      <Preview p={p} />
+    </div>
+    <div className="mt-5 md:mt-6 flex items-start justify-between gap-6">
+      <div className="min-w-0">
+        <h3 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-semibold leading-none tracking-[-0.045em] transition-colors duration-500 group-hover:text-clay">
+          {p.title}
+        </h3>
+        <p className="mt-3 max-w-[52ch] text-base md:text-lg leading-snug text-graphite">{p.description}</p>
+        <p className="mt-2 text-sm text-graphite/80">{p.kind}</p>
+      </div>
+      <span className="hidden sm:inline-flex h-12 shrink-0 items-center gap-2 rounded-full border-[1.5px] border-ink/80 pl-5 pr-4 text-[15px] font-medium transition-colors duration-300 group-hover:bg-ink group-hover:text-paper">
+        Visit
+        <ArrowUpRight size={18} strokeWidth={2} className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+      </span>
+    </div>
+  </a>
 );
 
-const ProjectRow = ({ project }: { project: Project }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  return (
-    <motion.div
-      layout
-      onClick={() => setIsExpanded(!isExpanded)}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
-      className="border-b border-border-dim py-8 md:py-12 px-4 md:px-8 transition-all hover:bg-surface/50 group cursor-pointer relative overflow-hidden"
-    >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
-        <div className="flex items-center gap-6 md:gap-24">
-          <span className="font-jetbrains text-accent-fix text-[12px] md:text-[14px] font-bold uppercase tracking-[2px] md:tracking-[3px]">{project.number}</span>
-          <h3 className="text-3xl md:text-7xl font-instrument font-medium text-text-primary group-hover:text-accent-fix transition-colors duration-500 break-words">{project.title}</h3>
-        </div>
-
-        <div className="flex flex-wrap gap-2 md:gap-4 md:ml-auto items-center">
-          {project.tags.map(tag => (
-            <span key={tag} className="font-jetbrains text-[10px] md:text-[12px] uppercase tracking-[1px] md:tracking-[2px] px-3 py-1.5 md:px-4 md:py-2 bg-accent/5 border border-accent/20 text-accent/80">
-              {tag}
-            </span>
-          ))}
-          <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border border-border-dim flex items-center justify-center group-hover:border-accent group-hover:bg-accent-fix group-hover:text-bg-primary transition-all duration-500 ml-2 md:ml-6">
-            <ArrowUpRight size={20} className="md:w-6 md:h-6" />
-          </div>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="pt-8 md:pt-12 md:pl-40 max-w-4xl">
-              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed mb-8 md:mb-10 font-instrument">
-                {project.description}
-              </p>
-              {project.details && project.details.length > 0 && (
-                <ul className="flex flex-col gap-4 md:gap-6 mb-8 md:mb-12">
-                  {project.details.map((detail, i) => (
-                    <li key={i} className="text-text-secondary text-base md:text-lg leading-relaxed font-instrument flex gap-4 md:gap-6 group/bullet">
-                      <span className="text-accent-fix mt-1.5 shrink-0 group-hover/bullet:translate-x-2 transition-transform">→</span>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <div className="flex gap-6 md:gap-10">
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[2px] md:tracking-[3px] text-accent-fix hover:text-accent-hover transition-colors flex items-center gap-3 interactive group/link">
-                  Visit Platform <div className="w-8 md:w-12 h-px bg-accent group-hover/link:bg-accent-hover group-hover/link:w-16 transition-all"></div>
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <motion.div
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: isExpanded ? 1 : 0 }}
-        className="absolute left-0 top-0 bottom-0 w-1.5 md:w-2 bg-accent origin-top"
-      />
-    </motion.div>
-  );
-};
-
-const SkillCategory = ({ title, skills }: { title: string, skills: Skill[] }) => (
-  <div className="flex flex-col gap-8 md:gap-12">
-    <h4 className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[6px] md:tracking-[10px] text-accent-fix border-b border-accent/10 pb-4 md:pb-6">{title}</h4>
-    <ul className="flex flex-col gap-8 md:gap-12">
-      {skills.map(skill => (
-        <li key={skill.title} className="group">
-          <div className="flex items-center gap-4 md:gap-6 mb-3 md:mb-4">
-            <div className="p-3 md:p-4 rounded-lg md:rounded-xl bg-accent/5 text-accent-fix group-hover:bg-accent-fix group-hover:text-bg-primary transition-all duration-500">
-              {skill.icon}
-            </div>
-            <span className="text-text-primary text-xl md:text-3xl font-instrument group-hover:translate-x-4 transition-transform duration-500">{skill.title}</span>
-          </div>
-          <p className="text-text-secondary text-base md:text-lg font-instrument leading-relaxed pl-4 md:pl-6 border-l-2 border-border-dim/50 group-hover:border-accent-fix transition-colors">
-            {skill.details}
-          </p>
-        </li>
-      ))}
-    </ul>
+const WorkHeader = ({ progress }: { progress?: ReturnType<typeof useSpring> }) => (
+  <div className="px-site flex items-end justify-between gap-6">
+    <h2 className="text-[clamp(2.75rem,7vw,7.5rem)] font-semibold leading-[0.9] tracking-[-0.05em]">Selected work</h2>
+    <div className="hidden sm:flex flex-col items-end gap-3 pb-2 text-sm text-graphite">
+      <span>{projects.length} live projects — scroll to explore</span>
+      {progress && (
+        <span className="block h-[2px] w-40 overflow-hidden rounded-full bg-stone" aria-hidden>
+          <motion.span className="block h-full origin-left bg-ink" style={{ scaleX: progress }} />
+        </span>
+      )}
+    </div>
   </div>
 );
 
-const EducationBlock = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  return (
-    <div className="mb-24 md:mb-40">
-      <SectionLabel>Education</SectionLabel>
-      <div
-        className="relative pl-8 md:pl-16 border-l-2 border-border-dim group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className={`absolute left-[-2px] top-0 w-1 h-full transition-colors duration-700 ${isHovered ? 'bg-accent-fix' : 'bg-border-dim'}`} />
-        <div className={`absolute left-[-6px] md:left-[-8px] top-2 w-3 md:w-4 h-3 md:h-4 rounded-full bg-bg-primary border-2 transition-all duration-500 ${isHovered ? 'border-accent-fix scale-125' : 'border-border-dim'}`} />
+// Vertical pixels scrolled per horizontal pixel moved (< 1 = the gallery travels faster than the page).
+const SCROLL_RATIO = 0.7;
 
-        <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-6 mb-6 md:mb-8">
-          <h4 className="text-3xl md:text-5xl font-instrument font-medium text-text-primary">CM Shri School</h4>
-          <span className="font-jetbrains text-[12px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-accent-fix/50">2024 — 2028 (Expected)</span>
-        </div>
+const Work = () => {
+  const reduce = useReducedMotion();
+  const outerRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = useState(0);
+  const [vh, setVh] = useState(0);
 
-        <div className="font-dm-mono text-base md:text-xl uppercase tracking-[3px] md:tracking-[4px] text-accent-fix mb-8 md:mb-10">11th Grade — Commerce</div>
+  useLayoutEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      if (!track) return;
+      setDistance(Math.max(0, track.scrollWidth - window.innerWidth));
+      setVh(window.innerHeight);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, [reduce]);
 
-        <p className="text-text-secondary text-xl md:text-2xl leading-relaxed font-instrument mb-12 md:mb-16 max-w-4xl">
-          Studying commerce while actively building robotics projects and preparing to launch a startup. Focusing on business fundamentals and technical execution.
-        </p>
+  const { scrollYProgress } = useScroll({ target: outerRef, offset: ['start start', 'end end'] });
+  const rawX = useTransform(scrollYProgress, [0, 1], [0, -distance]);
+  const x = useSpring(rawX, { stiffness: 140, damping: 30, mass: 0.35 });
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.35 });
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-5xl">
-          <div className="bg-surface/30 border border-border-dim p-6 md:p-10 rounded-sm hover:border-accent-fix/40 transition-colors group/card">
-            <div className="w-10 md:w-12 h-10 md:h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent-fix mb-6 md:mb-8 group-hover/card:bg-accent-fix group-hover/card:text-bg-primary transition-all">
-              <Sparkles size={20} className="md:w-6 md:h-6" />
-            </div>
-            <h5 className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[3px] md:tracking-[4px] text-text-primary mb-4 md:mb-6">Academic Excellence</h5>
-            <p className="text-text-secondary text-base md:text-lg font-instrument leading-relaxed">
-              Won ₹5,000 scholarship and medal for qualifying in the top 100 students in the MVPP exam.
-            </p>
-          </div>
-          <div className="bg-surface/30 border border-border-dim p-6 md:p-10 rounded-sm hover:border-accent-fix/40 transition-colors group/card">
-            <div className="w-10 md:w-12 h-10 md:h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent-fix mb-6 md:mb-8 group-hover/card:bg-accent-fix group-hover/card:text-bg-primary transition-all">
-              <Zap size={20} className="md:w-6 md:h-6" />
-            </div>
-            <h5 className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[3px] md:tracking-[4px] text-text-primary mb-4 md:mb-6">Robotics Leadership</h5>
-            <p className="text-text-secondary text-base md:text-lg font-instrument leading-relaxed">
-              1st Position in School Robotics Competition: Designed an automatic braking system on a model car, qualifying for zonals.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+  // Keyboard users: tabbing to an off-screen card scrolls the page to bring it into view.
+  const focusCard = (el: HTMLElement) => {
+    const outer = outerRef.current;
+    if (!outer || !distance) return;
+    const target = Math.min(distance, Math.max(0, el.offsetLeft - window.innerWidth * 0.1));
+    const top = outer.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: top + target * SCROLL_RATIO, behavior: 'auto' });
+  };
 
-const ExperienceItem = ({ exp }: { exp: Experience }) => (
-  <div className="relative pl-8 md:pl-16 border-l-2 border-border-dim group pb-20 md:pb-32 last:pb-0">
-    <div className="absolute left-[-2px] top-0 w-1 h-full bg-border-dim group-hover:bg-accent-fix transition-colors duration-700" />
-    <div className="absolute left-[-6px] md:left-[-8px] top-2 w-3 md:w-4 h-3 md:h-4 rounded-full bg-bg-primary border-2 border-border-dim group-hover:border-accent-fix transition-all duration-500" />
-
-    <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-4 md:gap-6 mb-6 md:mb-8">
-      <h4 className="text-3xl md:text-5xl font-instrument font-medium text-text-primary group-hover:text-accent-fix transition-colors">{exp.company}</h4>
-      <span className="font-jetbrains text-[12px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-accent-fix/50">{exp.dates}</span>
-    </div>
-
-    <div className="font-dm-mono text-base md:text-xl uppercase tracking-[3px] md:tracking-[4px] text-accent-fix mb-8 md:mb-10 bg-accent/5 inline-block px-3 py-1.5 md:px-4 md:py-2">{exp.role}</div>
-
-    <ul className="flex flex-col gap-6 md:gap-8 max-w-5xl">
-      {exp.bullets.map((bullet, i) => (
-        <li key={i} className="text-text-secondary text-lg md:text-xl leading-relaxed font-instrument flex gap-4 md:gap-6 group/bullet">
-          <span className="text-accent-fix mt-2 shrink-0 group-hover/bullet:translate-x-2 transition-transform">→</span>
-          {bullet}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
-const CertBadge = ({ title, issuer, link, onClick }: { title: string, issuer: string, link?: string, onClick?: () => void }) => {
-  const content = (
-    <>
-      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-accent/10 flex items-center justify-center font-bebas text-2xl md:text-4xl text-accent-fix group-hover:bg-accent-fix group-hover:text-bg-primary transition-all duration-500">{title[0]}</div>
-      <div>
-        <h4 className="text-text-primary text-xl md:text-2xl font-instrument font-medium leading-tight">{title}</h4>
-        <p className="text-text-tertiary text-[10px] md:text-[12px] font-dm-mono uppercase tracking-[2px] md:tracking-[4px] group-hover:text-accent-fix/70 transition-colors">{issuer}</p>
-      </div>
-    </>
-  );
-
-  if (onClick) {
+  if (reduce) {
+    // Reduced motion: a plain swipeable row, no scroll-linked movement.
     return (
-      <button
-        onClick={onClick}
-        className="flex items-center gap-6 md:gap-8 bg-surface/50 p-6 md:p-8 border border-border-dim hover:border-accent-fix transition-all group interactive text-left w-full cursor-pointer"
-      >
-        {content}
-      </button>
+      <section id="work" className="pt-28 md:pt-40">
+        <WorkHeader />
+        <div className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[clamp(1.25rem,3.5vw,5rem)] pb-6">
+          {projects.map((p) => <div key={p.title} className="snap-start"><ProjectCard p={p} /></div>)}
+        </div>
+      </section>
     );
   }
 
   return (
-    <a
-      href={link || "#"}
-      target={link ? "_blank" : undefined}
-      rel={link ? "noopener noreferrer" : undefined}
-      className="flex items-center gap-6 md:gap-8 bg-surface/50 p-6 md:p-8 border border-border-dim hover:border-accent-fix transition-all group interactive"
-    >
-      {content}
-    </a>
+    <section id="work" ref={outerRef} className="relative" style={{ height: distance ? distance * SCROLL_RATIO + vh : undefined }}>
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-8 md:gap-12 overflow-clip pt-20 pb-6">
+        <WorkHeader progress={progress} />
+        <motion.div
+          ref={trackRef}
+          style={{ x }}
+          className="flex w-max gap-6 md:gap-10 px-[clamp(1.25rem,3.5vw,5rem)] will-change-transform"
+        >
+          {projects.map((p) => <ProjectCard key={p.title} p={p} onFocus={focusCard} />)}
+        </motion.div>
+      </div>
+    </section>
   );
 };
 
-// --- Main Application ---
+// ---------- About ----------
+
+const About = () => (
+  <section id="about" className="px-site py-28 md:py-44">
+    <h2 className="sr-only">About Murli Prajapati</h2>
+    <p className="max-w-[28ch] text-[clamp(2rem,4.6vw,5.5rem)] font-semibold leading-[1.04] tracking-[-0.045em] text-balance">
+      I'm Murli
+      <img
+        src="/pixelart.jpg"
+        alt="Murli Prajapati"
+        width={160}
+        height={160}
+        className="mx-[0.18em] inline-block h-[0.9em] w-[0.9em] -translate-y-[0.06em] rounded-full border border-stone object-cover align-middle"
+      />
+      — a commerce student from Delhi who designs and engineers products that{' '}
+      <span className="text-graphite">solve real business problems.</span>
+    </p>
+
+    <div className="mt-16 md:mt-24 grid gap-10 md:grid-cols-12">
+      <p className="md:col-span-5 md:col-start-1 max-w-[46ch] text-lg leading-relaxed text-graphite">
+        I pair business fundamentals with modern engineering. From winning robotics competitions to shipping full-stack SaaS,
+        the goal never changes: fast, scalable and quietly beautiful.
+      </p>
+      <dl className="md:col-span-6 md:col-start-7 grid grid-cols-3 gap-6">
+        {[
+          { k: '15+', v: 'Projects delivered' },
+          { k: String(certificates.length), v: 'Certificates' },
+          { k: '100%', v: 'Client satisfaction' },
+        ].map((f) => (
+          <div key={f.v}>
+            <dt className="sr-only">{f.v}</dt>
+            <dd className="text-[clamp(2.25rem,4vw,4rem)] font-semibold leading-none tracking-[-0.05em]">{f.k}</dd>
+            <dd className="mt-3 text-sm text-graphite">{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+);
+
+// ---------- Experience ----------
+
+const ROWS = [
+  ...experience.map((r) => ({ org: r.org, role: r.role, dates: r.dates })),
+  { org: education.org, role: 'Commerce, expected 2028', dates: education.dates },
+  { org: 'MVPP Exam', role: 'Top 100 — ₹5,000 scholarship & medal', dates: 'Honour' },
+  { org: 'School Robotics', role: '1st place — automatic braking system', dates: 'Honour' },
+];
+
+const Experience = () => (
+  <section id="experience" className="px-site pb-28 md:pb-44">
+    <h2 className="text-[clamp(2.75rem,7vw,7.5rem)] font-semibold leading-[0.95] tracking-[-0.05em]">Experience</h2>
+    <ul className="mt-14 md:mt-20 border-b border-stone">
+      {ROWS.map((r) => (
+        <li key={r.org} className="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-t border-stone py-6 md:grid-cols-12 md:py-8">
+          <p className="col-start-1 row-start-1 text-2xl md:col-span-5 md:text-[clamp(1.5rem,2.2vw,2.25rem)] font-semibold tracking-[-0.035em]">{r.org}</p>
+          <p className="col-span-2 col-start-1 row-start-2 text-graphite md:col-span-5 md:col-start-6 md:row-start-1 md:text-lg">{r.role}</p>
+          <p className="col-start-2 row-start-1 text-right text-sm text-graphite md:col-span-2 md:col-start-11">{r.dates}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+);
+
+// ---------- Certificates (21st: Morphing Dialog) ----------
+
+const Certificates = () => (
+  <section id="certificates" className="px-site pb-28 md:pb-44">
+    <h2 className="text-[clamp(2.75rem,7vw,7.5rem)] font-semibold leading-[0.95] tracking-[-0.05em]">Certificates</h2>
+    <ul className="mt-14 md:mt-20 grid gap-x-6 gap-y-12 sm:grid-cols-2 xl:grid-cols-4">
+      {certificates.map((c) => (
+        <li key={c.slug}>
+          <MorphingDialog transition={{ type: 'spring', bounce: 0.05, duration: 0.55 }}>
+            <MorphingDialogTrigger label={`View the ${c.title} certificate from ${c.issuer}`} className="group block w-full text-left">
+              <div className="overflow-hidden rounded-xl border border-stone bg-white">
+                <MorphingDialogImage
+                  src={c.image}
+                  alt={c.alt}
+                  className="aspect-[3/2] w-full object-contain transition-transform duration-[1200ms] ease-[var(--ease-apple)] group-hover:scale-[1.03]"
+                />
+              </div>
+              <MorphingDialogTitle className="mt-5 text-lg font-semibold tracking-[-0.02em]">{c.title}</MorphingDialogTitle>
+              <MorphingDialogSubtitle className="mt-1 text-sm text-graphite">{c.issuer} · {c.date}</MorphingDialogSubtitle>
+            </MorphingDialogTrigger>
+            <MorphingDialogContainer>
+              <MorphingDialogContent className="relative w-[min(94vw,1280px)] rounded-2xl bg-paper p-2 md:p-3">
+                <MorphingDialogImage src={c.image} alt={c.alt} className="max-h-[78svh] w-full rounded-xl bg-white object-contain" />
+                <div className="flex flex-col gap-1 px-2 pb-2 pt-4 md:flex-row md:items-baseline md:justify-between md:px-3">
+                  <MorphingDialogTitle className="text-lg md:text-xl font-semibold tracking-[-0.02em]">{c.title}</MorphingDialogTitle>
+                  <MorphingDialogSubtitle className="text-sm text-graphite">{c.issuer} · {c.date}</MorphingDialogSubtitle>
+                </div>
+                <MorphingDialogClose className="top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-ink text-paper md:top-5 md:right-5">
+                  <X size={18} strokeWidth={1.75} />
+                </MorphingDialogClose>
+              </MorphingDialogContent>
+            </MorphingDialogContainer>
+          </MorphingDialog>
+        </li>
+      ))}
+    </ul>
+  </section>
+);
+
+// ---------- Contact ----------
+
+const CopyEmail = () => {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      className="inline-flex h-14 md:h-16 items-center gap-3 rounded-full border-[1.5px] border-paper/40 px-7 text-base md:text-lg font-medium text-paper transition-colors duration-300 hover:border-paper hover:bg-paper hover:text-ink"
+    >
+      {copied ? <Check size={20} strokeWidth={2} aria-hidden /> : <Copy size={20} strokeWidth={1.75} aria-hidden />}
+      <span aria-live="polite">{copied ? 'Copied!' : 'Copy email'}</span>
+    </button>
+  );
+};
+
+const Contact = () => (
+  <section id="contact" className="bg-ink text-paper">
+    <div className="px-site pt-28 md:pt-44 pb-10">
+      <h2 className="text-[clamp(2.75rem,7vw,7.5rem)] font-semibold leading-[0.95] tracking-[-0.05em]">
+        Let's build something<span className="text-clay">.</span>
+      </h2>
+      <a href={`mailto:${EMAIL}`} className="group mt-10 md:mt-14 inline-flex max-w-full items-center gap-[0.3em] text-[clamp(1.25rem,3.4vw,3.5rem)] font-medium tracking-[-0.03em]">
+        <span className="link-draw truncate">{EMAIL}</span>
+        <ArrowUpRight className="h-[0.8em] w-[0.8em] shrink-0 text-clay transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1" strokeWidth={1.5} aria-hidden />
+      </a>
+
+      <div className="mt-10 flex flex-wrap gap-3">
+        <a
+          href={`mailto:${EMAIL}`}
+          className="group inline-flex h-14 md:h-16 items-center gap-3 rounded-full bg-paper pl-7 pr-6 text-base md:text-lg font-medium text-ink transition-colors duration-300 hover:bg-white"
+        >
+          <Mail size={20} strokeWidth={1.75} aria-hidden />
+          Send an email
+          <ArrowUpRight size={18} strokeWidth={2} className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+        </a>
+        <CopyEmail />
+      </div>
+
+      <h3 className="sr-only">Find Murli Prajapati online</h3>
+      <ul className="mt-20 md:mt-28 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {socials.map((s) => (
+          <li key={s.label}>
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 md:gap-5 rounded-2xl bg-paper p-5 md:p-6 text-ink transition-[transform,background-color] duration-300 ease-[var(--ease-apple)] hover:-translate-y-1 hover:bg-white"
+            >
+              <span className="flex h-14 w-14 md:h-16 md:w-16 shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-stone">
+                <img src={s.icon} alt="" width={32} height={32} className="h-8 w-8 md:h-9 md:w-9 object-contain" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-xl md:text-2xl font-semibold tracking-[-0.03em]">{s.label}</span>
+                <span className="block truncate text-sm text-graphite">{s.handle}</span>
+              </span>
+              <ArrowUpRight size={22} strokeWidth={1.75} className="ml-auto shrink-0 text-graphite transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink" aria-hidden />
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <footer className="mt-20 md:mt-28 flex flex-col-reverse gap-6 border-t border-ink-2 pt-8 md:flex-row md:items-center md:justify-between">
+        <p className="text-sm text-stone">© 2026 Murli Prajapati — Delhi, India</p>
+        <a
+          href="#top"
+          className="group inline-flex h-12 w-fit items-center gap-2 rounded-full border-[1.5px] border-paper/30 px-5 text-[15px] font-medium transition-colors duration-300 hover:border-paper"
+        >
+          Back to top
+          <ArrowUp size={16} strokeWidth={2} className="transition-transform duration-500 group-hover:-translate-y-0.5" aria-hidden />
+        </a>
+      </footer>
+    </div>
+  </section>
+);
+
+// ---------- App ----------
+
+const ROUTE_TO_SECTION: Record<string, string> = {
+  '/about': 'about',
+  '/projects': 'work',
+  '/skills': 'work',
+  '/experience': 'experience',
+  '/certificates': 'certificates',
+  '/contact': 'contact',
+};
 
 export default function App() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const roles = [
-    "Web Developer",
-    "UI/UX Designer",
-    "Video Editor",
-    "AI Agent & Bot Creator",
-    "Custom Systems Builder"
-  ];
-  const [isNavScrolled, setIsNavScrolled] = useState(false);
-  const [showCert, setShowCert] = useState(false);
-
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
+  // Pre-rendered routes (/certificates, /about…) land on their section.
   useEffect(() => {
-    const timer = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 2500);
-
-    const handleScroll = () => {
-      setIsNavScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    const id = ROUTE_TO_SECTION[window.location.pathname.replace(/\/$/, '')];
+    if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'auto' }));
   }, []);
 
-  // --- Production Projects ---
-  const projects: Project[] = [
-    {
-      id: "1",
-      number: "01",
-      title: "Uniform Trends",
-      tags: ["E-commerce", "Cloudflare", "React"],
-      description: "A modern digital storefront optimized for rapid delivery and performance. Features a seamless shopping experience with serverless backend logic.",
-      details: [
-        "Optimized front-end rendering leading to a perfect performance score.",
-        "Implemented complex e-commerce logic including cart state management and secure checkout.",
-        "Build complete admin dashboard for seamless connection between managing the website and business."
-      ],
-      link: "http://uniformtrends.pages.dev/"
-    },
-    {
-      id: "2",
-      number: "02",
-      title: "Bielco Agency",
-      tags: ["React", "Seo", "Business"],
-      description: "The digital heartbeat of Bielco. Designed to convert small business challenges into global growth opportunities through high-end engineering.",
-      details: [
-        "Designed a high-end, motion-rich user interface using Framer Motion and React.",
-        "Used coustom premium design for creating interactive user experience.",
-        "Integrated advanced SEO strategies ensuring top ranking for targeted local business keywords."
-      ],
-      link: "https://www.bielco.in"
-    },
-    {
-      id: "3",
-      number: "03",
-      title: "Portaleap",
-      tags: ["B2B SaaS", "Product", "Web"],
-      description: "A comprehensive B2B SaaS product designed to streamline workflows and optimize business operations.",
-      details: [
-        "Developed a comprehensive B2B SaaS dashboard tailored for document automation.",
-        "Integrated multi data structures to ensure smooth flow in the documentation between enterprises.",
-        "Build coustom tags and workspaces for multple management under one platform"
-      ],
-      link: "https://portaleap.pages.dev/"
-    }
-  ];
-
-
-  const experience: Experience[] = [
-    {
-      company: "Bielco",
-      role: "Co-Founder & Part of Founding Team",
-      dates: "2026 — PRESENT",
-      bullets: [
-        "Solving complex digital presence challenges for small businesses by creating high-impact, custom software solutions.",
-        "Building full-scale websites from inception to deployment with deep search optimization and secure database architectures.",
-        "Pioneering AI-driven development workflows and scalable marketing strategies to drive measurable growth for clients."
-      ]
-    }
-  ];
-
-  const skillCategories = [
-    {
-      title: "Engineering & Development",
-      skills: [
-        { title: "Web Developer", icon: <Layout size={24} />, details: "Building full-scale websites using React, Next.js, HTML, CSS, JavaScript, TypeScript, and Python." },
-        { title: "Google Ads & SEO", icon: <Globe size={24} />, details: "Deep search engine optimization (SEO) and AI engine optimization (AEO) alongside targeted campaign setups to drive top positioning." }
-      ]
-    },
-    {
-      title: "Bot Systems & Intelligence",
-      skills: [
-        { title: "AI Agent & Bot Creator", icon: <Bot size={24} />, details: "Creating custom automation bots including Telegram bots, WhatsApp bots, and Discord bots to simplify interactions and manage messaging pipelines." },
-        { title: "Custom Business Systems", icon: <Server size={24} />, details: "Creating systems for business solutions, like bot agents that simplify the weekly reports of businesses, tracking employee status, inventory, products, and system health." }
-      ]
-    },
-    {
-      title: "Creative & UI/UX",
-      skills: [
-        { title: "UI/UX Designer", icon: <Sparkles size={24} />, details: "Designing premium, conversion-focused user interfaces with high aesthetics using Figma and Canva." },
-        { title: "Video Editor", icon: <Video size={24} />, details: "Professional-grade editing using After Effects and CapCut to output brand video assets and marketing graphics." }
-      ]
-    }
-  ];
-
   return (
-    <div className="relative min-h-screen selection:bg-accent-fix selection:text-bg-primary overflow-x-hidden bg-bg-primary text-text-primary font-instrument">
-      <CustomCursor />
-
-      {/* Ambient Green Glows */}
-      <div className="fixed top-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/5 rounded-full blur-[150px] pointer-events-none z-0" />
-      <div className="fixed bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 rounded-full blur-[150px] pointer-events-none z-0" />
-
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-[3px] md:h-[4px] bg-accent-fix z-[60] origin-left shadow-[0_0_15px_rgba(232,255,71,0.5)]"
-        style={{ scaleX }}
-      />
-
-      {/* Globally Fixed Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 h-20 md:h-24 z-50 transition-all duration-500 border-b bg-bg-primary/95 backdrop-blur-xl border-border-dim py-0">
-        <div className="max-w-[1700px] mx-auto px-6 md:px-8 h-full flex items-center justify-between">
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="font-bebas text-3xl md:text-5xl text-accent-fix tracking-[4px] md:tracking-[6px] hover:text-accent-hover hover:scale-110 transition-all interactive"
-          >
-            MP
-          </a>
-
-          {/* Desktop Links (Hash Anchors) */}
-          <div className="hidden md:flex items-center gap-12 md:gap-20">
-            {['About', 'Projects', 'Skills', 'Experience', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="relative group font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[3px] md:tracking-[4px] text-text-secondary hover:text-accent-fix transition-colors interactive"
-              >
-                {item}
-                <span className="absolute -bottom-2 md:-bottom-3 left-0 w-0 h-1 bg-accent-fix group-hover:w-full group-hover:bg-accent-hover transition-all duration-300" />
-              </a>
-            ))}
-          </div>
-
-          <a
-            href="#contact"
-            className="md:hidden font-dm-mono text-[11px] uppercase tracking-[2px] text-accent-fix border border-accent-fix/30 px-4 py-2 rounded-full interactive"
-          >
-            Contact
-          </a>
-        </div>
-      </nav>
-
-      {/* Sequential Single-Page Content Area */}
-      <main className="relative z-10 pt-20">
-
-        {/* HERO SECTION */}
-        <section className="min-h-[90vh] md:min-h-screen flex flex-col justify-center max-w-[1700px] mx-auto px-6 md:px-8 pt-20 md:pt-24 relative">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          >
-            <div className="mb-6 md:mb-8 flex items-center gap-4 md:gap-6 font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-accent-fix">
-              <span className="w-12 md:w-20 h-px bg-accent-fix"></span>
-              Established 2026
-            </div>
-
-            <h1 className="font-bebas text-[clamp(2.5rem,15vw,13rem)] leading-[0.9] md:leading-[0.85] text-text-primary tracking-tighter mb-8 md:mb-12 select-none">
-              MURLI <span className="text-accent-fix">PRAJAPATI</span> <span className="text-accent-fix hover:text-white transition-colors duration-500">.</span>
-            </h1>
-
-            <div className="h-8 md:h-12 mb-12 md:mb-16">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={roleIndex}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.4 }}
-                  className="font-dm-mono text-lg md:text-3xl text-accent-fix uppercase tracking-[4px] md:tracking-[8px] font-bold"
-                >
-                  {roles[roleIndex]}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            <p className="font-instrument italic text-3xl md:text-7xl text-text-secondary max-w-6xl leading-[1.2] md:leading-[1.1] mb-12 md:mb-20">
-              Co-Founder of <span className="text-text-primary border-b-2 md:border-b-4 border-accent-fix">Bielco</span>. Translating complex business challenges into <span className="text-accent-fix font-normal">worldwide</span> digital solutions.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-8 md:gap-12 mb-16 md:mb-24">
-              <a
-                href="#projects"
-                className="group relative inline-flex items-center px-8 py-4 md:px-16 md:py-7 border-2 border-accent-fix text-accent-fix font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[2px] md:tracking-[4px] font-bold overflow-hidden transition-all hover:bg-accent-fix hover:text-bg-primary hover:pr-12 md:hover:pr-20 interactive"
-              >
-                <span className="relative z-10">Explore Work</span>
-                <ArrowUpRight size={18} className="absolute right-4 md:right-8 opacity-0 group-hover:opacity-100 transition-all z-10 md:w-6 md:h-6" />
-              </a>
-            </div>
-
-            {/* AEO Search Summary Card */}
-            <div className="bg-surface/30 border border-border-dim rounded-lg p-6 md:p-10 max-w-4xl hover:border-accent-fix/30 transition-colors">
-              <div className="mb-6">
-                <span className="font-dm-mono text-[11px] uppercase tracking-[3px] text-accent-fix">AEO Summary / Quick Profile Index</span>
-              </div>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                <img
-                  src="/pixelart.jpg"
-                  alt="Murli Prajapati Pixel Art Avatar"
-                  className="w-24 h-24 md:w-28 md:h-28 rounded-lg object-cover border-2 border-accent-fix shadow-lg shrink-0"
-                />
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl text-text-primary font-medium mb-4 font-instrument">Murli Prajapati Summary</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-text-secondary font-instrument text-base md:text-lg">
-                    <div>
-                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Roles</strong>
-                      Web Developer, UI/UX Designer, Video Editor, Bot Systems Creator.
-                    </div>
-                    <div>
-                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Founding Member</strong>
-                      Co-Founder at Bielco (<a href="https://www.bielco.in" target="_blank" rel="noopener noreferrer" className="text-accent-fix underline">www.bielco.in</a>).
-                    </div>
-                    <div className="md:col-span-2">
-                      <strong className="text-text-primary font-dm-mono text-[12px] uppercase block tracking-[2px] mb-1">Systems Solutions</strong>
-                      Creates custom automation bot agents (Telegram, WhatsApp, Discord) that simplify weekly business reports (mapping inventory, products, employee status, and system health).
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* ABOUT ME SECTION */}
-        <section id="about" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
-          <SectionLabel>About Me</SectionLabel>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-start">
-            <div>
-              <h3 className="font-instrument text-4xl md:text-6xl text-text-primary mb-8 leading-tight">
-                Bridging the gap between <span className="text-accent-fix italic font-normal">business logic</span> and <span className="text-accent-fix italic font-normal">technical execution</span>.
-              </h3>
-              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-6">
-                I am Murli Prajapati, an 11th-grade commerce student from Delhi, India with a deep passion for technology. Unlike traditional paths, I combine my understanding of business fundamentals with high-level software engineering to build products that solve real-world problems.
-              </p>
-              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-12">
-                As the Co-Founder and part of the founding team of Bielco, I don't just write code; I architect systems. From winning robotics competitions to developing full-stack SaaS platforms, my goal is always to deliver scalable, high-performance, and visually stunning digital experiences.
-              </p>
-
-              <div className="grid grid-cols-2 gap-8 border-t border-border-dim pt-12">
-                <div>
-                  <div className="text-4xl md:text-6xl font-bebas text-accent-fix mb-2">15+</div>
-                  <div className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[2px] text-text-secondary">Projects Completed</div>
-                </div>
-                <div>
-                  <div className="text-4xl md:text-6xl font-bebas text-accent-fix mb-2">100%</div>
-                  <div className="font-dm-mono text-[12px] md:text-[14px] uppercase tracking-[2px] text-text-secondary">Client Satisfaction</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative group mt-8 lg:mt-0">
-              <div className="absolute inset-0 bg-accent-fix translate-x-4 translate-y-4 rounded-lg transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"></div>
-              <div className="relative bg-surface border border-border-dim p-8 md:p-12 rounded-lg z-10 flex flex-col items-center justify-center min-h-[400px]">
-                <div className="w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-accent-fix mb-6 group-hover:scale-105 transition-transform duration-500 shadow-2xl relative bg-black/40">
-                  <img
-                    src="/pixelart.jpg"
-                    alt="Murli Prajapati Pixel Art Portrait"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h4 className="font-dm-mono text-xl md:text-2xl uppercase tracking-[4px] text-black mb-2 text-center font-bold">Murli Prajapati</h4>
-                <p className="font-dm-mono text-xs md:text-sm uppercase tracking-[2px] text-black/80 text-center mb-6 font-semibold">Co-Founder @ Bielco · Web &amp; Bot Developer</p>
-                <p className="text-black text-center text-base md:text-lg font-instrument font-medium">
-                  Whether it's building complex React applications, setting up bot systems, or designing conversion-oriented user flows, I thrive on building tools that simplify operations.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PROJECTS SECTION */}
-        <section id="projects" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
-          <SectionLabel>Production Platforms</SectionLabel>
-          <div className="flex flex-col border-t border-border-dim mb-24 md:mb-40">
-            {projects.map((project) => (
-              <ProjectRow key={project.id} project={project} />
-            ))}
-          </div>
-
-          <SectionLabel>Interactive Prototypes &amp; Web Showcase</SectionLabel>
-          <div className="relative group overflow-hidden rounded-2xl border border-border-dim bg-surface/30 hover:border-accent-fix/50 transition-all duration-500 p-8 md:p-14 shadow-2xl">
-            {/* Ambient Background Glow */}
-            <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent-fix/5 rounded-full blur-[100px] pointer-events-none group-hover:bg-accent-fix/10 transition-all duration-700" />
-            <div className="absolute bottom-[-20%] left-[-10%] w-[350px] h-[350px] bg-accent-fix/5 rounded-full blur-[80px] pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-              <div className="max-w-3xl">
-                <div className="mb-6">
-                  <span className="font-dm-mono text-[11px] md:text-xs uppercase tracking-[3px] text-accent-fix">
-                    prototype.bielco.in
-                  </span>
-                </div>
-
-                <h3 className="text-3xl md:text-5xl lg:text-6xl font-instrument text-text-primary mb-6 leading-tight group-hover:text-accent-fix transition-colors duration-500">
-                  Explore All Interactive Web Prototypes &amp; Projects
-                </h3>
-
-                <p className="text-text-secondary text-lg md:text-2xl font-instrument leading-relaxed mb-8 max-w-2xl">
-                  A centralized live directory showcasing my complete collection of client prototypes, experimental web systems, restaurant portals, and motion-driven user interfaces.
-                </p>
-
-                <div className="flex flex-wrap gap-2 md:gap-3">
-                  {["All Web Projects", "Live Demos", "Restaurant Portals", "Agency Showcases", "Responsive Frameworks", "UI/UX Concepts"].map((tag) => (
-                    <span key={tag} className="font-jetbrains text-[10px] md:text-[11px] uppercase tracking-[1px] px-3 py-1.5 bg-surface/80 border border-border-dim text-text-secondary group-hover:border-accent-fix/30 group-hover:text-text-primary transition-colors">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-center shrink-0 gap-4">
-                <a
-                  href="https://prototype.bielco.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="interactive inline-flex items-center justify-center gap-3 px-8 py-5 bg-accent-fix text-black font-dm-mono text-sm md:text-base font-bold uppercase tracking-[2px] rounded-lg shadow-xl hover:bg-accent-hover hover:scale-105 active:scale-95 transition-all duration-300 w-full sm:w-auto text-center cursor-pointer"
-                >
-                  Launch Prototypes Hub
-                  <ArrowUpRight size={20} className="stroke-[2.5] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </a>
-                <span className="font-dm-mono text-[11px] uppercase tracking-[2px] text-text-secondary lg:text-right">
-                  Opens live portal in new tab ↗
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SKILLS SECTION */}
-        <section id="skills" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
-          <SectionLabel>Core Expertise</SectionLabel>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24 mb-24 md:mb-40">
-            {skillCategories.map((cat, i) => (
-              <SkillCategory key={i} title={cat.title} skills={cat.skills} />
-            ))}
-          </div>
-
-          <SectionLabel>Systems & Bot Solutions</SectionLabel>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
-            <div>
-              <h3 className="font-instrument text-3xl md:text-5xl text-text-primary mb-6 leading-tight">
-                Simplifying business operations with <span className="text-accent-fix italic font-normal">custom bot agents</span>.
-              </h3>
-              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-6">
-                I build custom bots (Telegram bots, WhatsApp bots, and Discord bots) to optimize business administration. These solutions simplify operations by pulling complex database values and status events into real-time summaries.
-              </p>
-              <p className="text-text-secondary text-lg md:text-2xl leading-relaxed font-instrument mb-8">
-                Whether it's compiling weekly operations feedback or monitoring complex servers, these custom agents enable business owners to stay in control from their favorite messaging platform.
-              </p>
-              <div className="border-t border-border-dim pt-8 flex gap-8">
-                <div>
-                  <div className="font-dm-mono text-[12px] uppercase tracking-[3px] text-accent-fix mb-1">Telegram / WhatsApp / Discord</div>
-                  <div className="text-text-primary text-lg md:text-xl font-instrument">Multi-platform support for remote operations</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-surface/20 border border-border-dim rounded-xl p-8 md:p-12 relative overflow-hidden group hover:border-accent-fix/30 transition-all">
-              <div className="absolute top-[-10%] right-[-10%] w-[30%] h-[30%] bg-accent/5 rounded-full blur-[50px]" />
-              <h4 className="font-dm-mono text-[12px] uppercase tracking-[4px] text-accent-fix mb-8">System Solution Breakdown</h4>
-
-              <ul className="flex flex-col gap-6 font-instrument">
-                <li className="flex items-start gap-4">
-                  <span className="text-accent-fix mt-1">✔</span>
-                  <div>
-                    <strong className="text-text-primary block text-lg font-medium">Weekly Reports</strong>
-                    <span className="text-text-secondary">Simplifies complex operations data into short, digestible text summaries.</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="text-accent-fix mt-1">✔</span>
-                  <div>
-                    <strong className="text-text-primary block text-lg font-medium">Employee Status</strong>
-                    <span className="text-text-secondary">Monitors active employee shifts and schedules.</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="text-accent-fix mt-1">✔</span>
-                  <div>
-                    <strong className="text-text-primary block text-lg font-medium">Inventory & Products</strong>
-                    <span className="text-text-secondary">Syncs with catalogs to notify on low stock or update item indexes.</span>
-                  </div>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="text-accent-fix mt-1">✔</span>
-                  <div>
-                    <strong className="text-text-primary block text-lg font-medium">System Health</strong>
-                    <span className="text-text-secondary">Sends instant alerts on server load, website downtime, and database status.</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* EXPERIENCE & EDUCATION SECTION */}
-        <section id="experience" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 relative">
-          <EducationBlock />
-
-          <div className="mt-32 md:mt-48">
-            <SectionLabel>Professional History</SectionLabel>
-            <div className="flex flex-col gap-4 md:gap-6">
-              {experience.map((exp, i) => (
-                <ExperienceItem key={i} exp={exp} />
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-40 md:mt-64">
-            <SectionLabel>Certifications & Milestones</SectionLabel>
-            <p className="text-text-secondary text-xl md:text-2xl mb-12 max-w-4xl font-instrument leading-relaxed">
-              Continuous learning and competitive participation drive my technical growth. Here are some of my key credentials and achievements.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-              <CertBadge title="Yuva AI" issuer="Govt AI Initiative" onClick={() => setShowCert(true)} />
-              <CertBadge title="Data Analytics" issuer="Coursera Specialization" link="#" />
-              <CertBadge title="MVPP Scholar" issuer="State Level Top 100" link="#" />
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT SECTION */}
-        <section id="contact" className="py-24 md:py-48 max-w-[1700px] mx-auto px-6 md:px-8 text-center border-t border-border-dim relative">
-          <SectionLabel>Global Connect</SectionLabel>
-
-          <h2 className="font-instrument italic text-4xl md:text-8xl text-text-primary mb-12 md:mb-20 leading-tight">
-            Ready to scale your <span className="text-accent-fix underline underline-offset-8 md:underline-offset-12">digital presence</span>?
-          </h2>
-
-          <a
-            href="mailto:murliprajpatiofficial@zohomail.in"
-            className="font-bebas text-[clamp(1rem,5.5vw,5.5rem)] text-text-primary block mb-24 md:mb-32 tracking-[1px] md:tracking-[4px] whitespace-nowrap select-all max-w-full px-6 overflow-hidden text-ellipsis hover:text-accent-fix transition-colors"
-          >
-            murliprajpatiofficial@zohomail.in
-          </a>
-
-          <div className="flex justify-center items-center gap-12 md:gap-24 mb-32 md:mb-48">
-            <a href="https://github.com/MurliPrajapati-Official" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" title="GitHub" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
-              <Github size={32} className="md:w-12 md:h-12" />
-              <span className="sr-only">GitHub Profile</span>
-            </a>
-            <a href="https://www.linkedin.com/in/murli-prajapatiofficial/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" title="LinkedIn" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
-              <Linkedin size={32} className="md:w-12 md:h-12" />
-              <span className="sr-only">LinkedIn Profile</span>
-            </a>
-            <a href="https://www.instagram.com/murliprajapati.in/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile" title="Instagram" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
-              <Instagram size={32} className="md:w-12 md:h-12" />
-              <span className="sr-only">Instagram Profile</span>
-            </a>
-            <a href="https://www.youtube.com/@Dravynz" target="_blank" rel="noopener noreferrer" aria-label="YouTube Channel" title="YouTube" className="text-text-secondary hover:text-accent-fix transition-all hover:scale-125 interactive">
-              <Youtube size={32} className="md:w-12 md:h-12" />
-              <span className="sr-only">YouTube Channel</span>
-            </a>
-          </div>
-        </section>
-
+    <MotionConfig reducedMotion="user">
+      <a href="#work" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-paper">
+        Skip to content
+      </a>
+      <Nav />
+      <main>
+        <Hero />
+        <Marquee />
+        <Work />
+        <About />
+        <Experience />
+        <Certificates />
+        <Contact />
       </main>
-
-      {/* Global Footer */}
-      <footer className="max-w-[1700px] mx-auto px-6 md:px-8 pb-12 md:pb-24 relative z-10">
-        <div className="pt-8 md:pt-12 border-t border-border-dim/30 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
-          <p className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[8px] text-accent-fix/60">
-            © 2026 MURLI PRAJAPATI · CO-FOUNDER @ BIELCO
-          </p>
-
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-dm-mono text-[11px] md:text-[14px] uppercase tracking-[4px] md:tracking-[6px] text-text-secondary hover:text-accent-fix transition-all flex items-center gap-3 md:gap-4 interactive group"
-          >
-            Back to top <div className="w-10 md:w-12 h-px bg-text-secondary group-hover:bg-accent-fix group-hover:w-16 md:group-hover:w-20 transition-all"></div>
-          </button>
-        </div>
-      </footer>
-
-      {/* Certificate Modal */}
-      <AnimatePresence>
-        {showCert && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-bg-primary/90 backdrop-blur-sm p-4 md:p-8"
-            onClick={() => setShowCert(false)}
-          >
-            <div className="relative w-full max-w-4xl h-[80vh] bg-surface border border-border-dim rounded-xl overflow-hidden shadow-2xl flex flex-col" onClick={e => e.stopPropagation()}>
-              <div className="flex justify-between items-center p-4 border-b border-border-dim bg-bg-primary">
-                <h3 className="text-text-primary font-dm-mono uppercase tracking-[2px]">Yuva AI Certificate</h3>
-                <button
-                  onClick={() => setShowCert(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-accent-fix hover:bg-surface transition-all cursor-pointer"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="w-full flex-1 relative bg-surface">
-                <iframe
-                  src="/futureskills.pdf#toolbar=0&navpanes=0&scrollbar=0"
-                  className="w-full h-full border-none"
-                  title="Yuva AI Certificate"
-                />
-                <div
-                  className="absolute inset-0 z-10"
-                  onContextMenu={(e) => e.preventDefault()}
-                  title="Certificate preview (Download disabled)"
-                />
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    </MotionConfig>
   );
 }

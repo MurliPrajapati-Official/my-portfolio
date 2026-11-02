@@ -1,0 +1,41 @@
+{
+  "decisions": [
+    {
+      "date": "2026-11-02",
+      "direction": "Apple-style minimal, full-bleed. Fluid gutters (px-site), no max-width container; hero name fitted to the screen width with container query units.",
+      "palette": {
+        "source": "https://colorhunt.co/palette/faf7f0d8d2c2b174574a4947",
+        "paper": "#FAF7F0",
+        "stone": "#D8D2C2",
+        "clay": "#B17457",
+        "graphite": "#4A4947",
+        "derived": {
+          "paper-2": "#F3EEE3",
+          "clay-ink": "#8E5539",
+          "ink": "#1C1B1A",
+          "ink-2": "#2A2927"
+        }
+      },
+      "type": {
+        "sans": "Geist",
+        "accent": "Instrument Serif italic — one word at most"
+      },
+      "components": {
+        "@ibelick/infinite-slider": "src/components/motion-primitives/infinite-slider.tsx — capabilities marquee",
+        "@ibelick/morphing-dialog": "src/components/motion-primitives/morphing-dialog.tsx — certificate viewer (backdrop changed to solid ink, no blur)",
+        "@ibelick/text-effect": "src/components/motion-primitives/text-effect.tsx — hero name letter reveal on load"
+      },
+      "motion": "Load-time, interaction and scroll-linked horizontal movement only. No scroll-triggered fade/reveal. Project previews are looping muted MP4 screen recordings in public/work/.",
+      "avoid": [
+        "scroll-fade / whileInView reveals",
+        "section numbers and eyebrow labels",
+        "card grids and boxed panels",
+        "glassmorphism / backdrop blur",
+        "blobs, glows, decorative gradients",
+        "custom cursors",
+        "fixed narrow max-width containers"
+      ],
+      "work_gallery": "Sticky horizontal scroll gallery: vertical scroll drives the project track right→left (Framer Motion useScroll/useTransform/useSpring, SCROLL_RATIO 0.7). Reduced motion falls back to a swipeable snap row."
+    }
+  ]
+}
