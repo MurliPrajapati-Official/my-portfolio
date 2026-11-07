@@ -2,24 +2,23 @@
 @import "tailwindcss";
 
 /*
-  Palette — Color Hunt #FAF7F0 · #D8D2C2 · #B17457 · #4A4947
-  https://colorhunt.co/palette/faf7f0d8d2c2b174574a4947
-  Extended with a deeper ink for body contrast and a darker clay for accessible accent text.
+  Wispr Flow Aesthetic Palette
+  Paper: #f1efec | Bone: #d4c9be | Navy: #123458 | Ink: #030303 | Oxblood: #7a1f1f
 */
 @theme {
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --font-serif: "Instrument Serif", Georgia, serif;
 
-  --color-paper: #FAF7F0;      /* page */
-  --color-paper-2: #F3EEE3;    /* raised surface */
-  --color-stone: #D8D2C2;      /* hairlines, borders */
-  --color-clay: #B17457;       /* accent (decorative, large type) */
-  --color-clay-ink: #8E5539;   /* accent for small text, AA on paper */
-  --color-graphite: #4A4947;   /* secondary text */
-  --color-ink: #1C1B1A;        /* primary text, dark sections */
-  --color-ink-2: #2A2927;      /* raised surface on ink */
+  --color-paper: #f1efec;      /* page background */
+  --color-bone: #d4c9be;       /* borders, hairlines */
+  --color-navy: #123458;       /* deep accent */
+  --color-ink: #030303;        /* primary text */
+  --color-oxblood: #7a1f1f;    /* highlight accent */
+  --color-muted: #57534d;     /* secondary text */
 
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
   --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -39,15 +38,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--color-ink);
+    background-color: var(--color-oxblood);
     color: var(--color-paper);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-clay);
+    outline: 2px solid var(--color-oxblood);
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -62,21 +62,90 @@
 }
 
 @layer components {
-  /* Fluid, full-bleed page gutter — the layout uses the whole screen. */
+  /* Fluid, full-bleed page gutter */
   .px-site {
     padding-inline: clamp(1.25rem, 3.5vw, 5rem);
   }
 
-  /* Underline that draws in on hover — used for inline text links */
-  .link-draw {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-size: 0% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.5s var(--ease-apple);
+  /* Small-caps labels: high-end uniformity */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  .link-draw:hover,
-  .link-draw:focus-visible {
-    background-size: 100% 1px;
+
+  /* Underline that draws in on hover */
+  .uline {
+    position: relative;
+  }
+  .uline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.15em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.7s var(--ease-expo);
+  }
+  .uline:hover::after,
+  .uline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Duotone photography effect */
+  .duotone {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .duotone img {
+    filter: grayscale(1) contrast(1.08) brightness(1.06);
+  }
+  .duotone::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--tone, var(--color-navy));
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* Tactile press feedback */
+  .press {
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .press:active {
+    transform: scale(0.94);
+    transition-duration: 0.12s;
+  }
+
+  /* Roll-over link effect */
+  .roll {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 1.15;
+  }
+  .roll > span {
+    display: block;
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .roll > span + span {
+    position: absolute;
+    inset: 0;
+    transform: translateY(100%);
+  }
+  .roll:hover > span:first-child {
+    transform: translateY(-100%);
+  }
+  .roll:hover > span + span {
+    transform: translateY(0);
   }
 }
