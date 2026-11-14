@@ -43,9 +43,11 @@
   <!-- Favicons & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.svg" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="image_src" href="https://murliprajapati.pages.dev/murliprajapati.jpeg" />
 
   <!-- Open Graph / Facebook Metadata -->
   <meta property="og:type" content="website">
@@ -54,10 +56,12 @@
   <meta property="og:title" content="Murli Prajapati | Web Developer, UI/UX Designer & Bot Developer">
   <meta property="og:description"
     content="Official portfolio of Murli Prajapati, Co-Founder of Bielco. A professional Web Developer, UI/UX Designer, Video Editor, and Custom Bot Systems Creator.">
-  <meta property="og:image" content="https://murliprajapati.pages.dev/murli-prajapati-professional-portrait.jpeg">
-  <meta property="og:image:secure_url" content="https://murliprajapati.pages.dev/murli-prajapati-professional-portrait.jpeg">
+  <meta property="og:image" content="https://murliprajapati.pages.dev/murliprajapati.jpeg">
+  <meta property="og:image:secure_url" content="https://murliprajapati.pages.dev/murliprajapati.jpeg">
   <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:alt" content="Murli Prajapati Portfolio Pixel Art">
+  <meta property="og:image:width" content="721">
+  <meta property="og:image:height" content="721">
+  <meta property="og:image:alt" content="Murli Prajapati — photo">
 
   <!-- Twitter Cards -->
   <meta property="twitter:card" content="summary_large_image">
@@ -65,8 +69,8 @@
   <meta property="twitter:title" content="Murli Prajapati | Web Developer, UI/UX Designer & Bot Developer">
   <meta property="twitter:description"
     content="Official portfolio of Murli Prajapati, Co-Founder of Bielco. A professional Web Developer, UI/UX Designer, Video Editor, and Custom Bot Systems Creator.">
-  <meta property="twitter:image" content="https://murliprajapati.pages.dev/murli-prajapati-professional-portrait.jpeg">
-  <meta property="twitter:image:alt" content="Murli Prajapati Portfolio Pixel Art">
+  <meta property="twitter:image" content="https://murliprajapati.pages.dev/murliprajapati.jpeg">
+  <meta property="twitter:image:alt" content="Murli Prajapati — photo">
 
   <!-- Structured Data (Schema.org JSON-LD) -->
   <script type="application/ld+json">
@@ -78,8 +82,9 @@
     "name": "Murli Prajapati",
     "url": "https://murliprajapati.pages.dev/",
     "image": [
-      "https://murliprajapati.pages.dev/murli-prajapati-professional-portrait.jpeg",
-      "https://murliprajapati.pages.dev/pixelart.jpg",
+      {
+        "@id": "https://murliprajapati.pages.dev/murliprajapati.jpeg"
+      },
       "https://murliprajapati.pages.dev/certificates/murli-prajapati-adobe-generative-ai-content-creation-certificate.webp",
       "https://murliprajapati.pages.dev/certificates/murli-prajapati-be10x-ai-tools-workshop-certificate.webp",
       "https://murliprajapati.pages.dev/certificates/murli-prajapati-hoollow-editor-employment-certificate.webp",
@@ -198,12 +203,12 @@
     "@id": "https://murliprajapati.pages.dev/#profile",
     "url": "https://murliprajapati.pages.dev/",
     "name": "Murli Prajapati | Technology Entrepreneur & Developer",
-    "dateModified": "2026-11-02",
+    "dateModified": "2026-11-15",
     "mainEntity": {
       "@id": "https://murliprajapati.pages.dev/#person"
     },
     "primaryImageOfPage": {
-      "@id": "https://murliprajapati.pages.dev/murli-prajapati-professional-portrait.jpeg"
+      "@id": "https://murliprajapati.pages.dev/murliprajapati.jpeg"
     },
     "image": [
       {
@@ -223,9 +228,18 @@
   {
     "@context": "https://schema.org",
     "@type": "ImageObject",
-    "@id": "https://murliprajapati.pages.dev/pixelart.jpg",
-    "contentUrl": "https://murliprajapati.pages.dev/pixelart.jpg",
-    "name": "Murli Prajapati — portrait",
+    "@id": "https://murliprajapati.pages.dev/murliprajapati.jpeg",
+    "contentUrl": "https://murliprajapati.pages.dev/murliprajapati.jpeg",
+    "url": "https://murliprajapati.pages.dev/murliprajapati.jpeg",
+    "name": "Murli Prajapati — photo",
+    "caption": "Photo of Murli Prajapati, web developer and co-founder of Bielco",
+    "width": 721,
+    "height": 721,
+    "encodingFormat": "image/jpeg",
+    "representativeOfPage": true,
+    "about": {
+      "@id": "https://murliprajapati.pages.dev/#person"
+    },
     "creator": {
       "@id": "https://murliprajapati.pages.dev/#person"
     },
@@ -497,6 +511,7 @@
 
         <div class="sk-crawl">
           <h2>About Murli Prajapati</h2>
+          <img src="/murliprajapati.jpeg" width="160" height="160" alt="Murli Prajapati" style="border-radius:14px" />
           <p>Murli Prajapati is a web developer, UI/UX designer, video editor and bot systems creator from Delhi, India, and co-founder of Bielco (<a href="https://www.bielco.in">bielco.in</a>). He builds full websites in React, Next.js and TypeScript, designs conversion-focused interfaces in Figma, and creates Telegram, WhatsApp and Discord bots that summarise weekly business reports, employee status, inventory, products and system health.</p>
 
           <h2 id="certificates-static">Certificates of Murli Prajapati</h2>

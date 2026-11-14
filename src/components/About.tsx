@@ -13,7 +13,7 @@ export const About = () => (
           <p className="text-[clamp(2rem,4vw,5rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-balance" data-skew>
             {story[0]}
             <img
-              src="/murli-prajapati-professional-portrait.jpeg"
+              src="/murliprajapati.webp"
               alt="Murli Prajapati"
               width={160}
               height={160}

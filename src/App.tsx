@@ -61,7 +61,10 @@ const Nav = () => {
         }`}
         aria-label="Primary"
       >
-        <a href="#top" onClick={() => setOpen(false)} className="text-[15px] font-semibold tracking-[-0.01em] text-ink">Murli Prajapati</a>
+        <a href="#top" onClick={() => setOpen(false)} className="inline-flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-ink">
+          <img src="/murliprajapati.webp" alt="" width={32} height={32} className="h-8 w-8 rounded-full border border-stone object-cover" />
+          Murli Prajapati
+        </a>
 
         <ul className="hidden md:flex items-center gap-8">
           {NAV.map((n) => (
@@ -143,6 +146,18 @@ const Hero = () => (
         Available for projects
       </p>
     </div>
+
+    <motion.img
+      src="/murliprajapati.webp"
+      alt="Murli Prajapati"
+      width={721}
+      height={721}
+      fetchPriority="high"
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, ease: EASE, delay: 0.3 }}
+      className="mt-10 md:mt-12 ml-auto h-32 w-32 md:h-56 md:w-56 rounded-[28px] border border-stone object-cover"
+    />
 
     <div className="@container mt-auto pb-10 md:pb-14">
       <TextEffect
