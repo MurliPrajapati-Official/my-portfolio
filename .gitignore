@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+# Separate git repos kept locally (not part of this site)
+Portfolio-wisperflow/web/
+temp-awesome-claude-code/
